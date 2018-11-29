@@ -1,0 +1,187 @@
+[INIT]
+NumArmas=27
+
+[Arma1]
+Dir1=4719
+Dir2=4721
+Dir3=4718
+Dir4=4720
+
+[Arma3]
+Dir1=4723
+Dir2=4725
+Dir3=4722
+Dir4=4724
+
+'Garrote
+[ARMA4]
+Dir1=10269
+Dir2=10271
+Dir3=10268
+Dir4=10270
+
+'Cimitarra
+[ARMA5]
+Dir1=10295
+Dir2=10297
+Dir3=10294
+Dir4=10296
+
+'Vara de mago
+[ARMA6]
+Dir1=10321
+Dir2=10323
+Dir3=10320
+Dir4=10322
+
+'Arco
+[ARMA7]
+Dir1=10467
+Dir2=10469
+Dir3=10466
+Dir4=10468
+
+'Espada escaliburt
+[ARMA8]
+Dir1=4861
+Dir2=4863
+Dir3=4860
+Dir4=4862
+
+'Espada Daga
+[ARMA9]
+Dir1=5097
+Dir2=5099
+Dir3=5096
+Dir4=5098
+
+'Espada Plata
+[ARMA10]
+Dir1=5123
+Dir2=5125
+Dir3=5122
+Dir4=5124
+
+'Espada Matadrakos
+[ARMA11]
+Dir1=5149
+Dir2=5151
+Dir3=5148
+Dir4=5150
+
+'Espada Amargura
+[ARMA12]
+Dir1=5175
+Dir2=5177
+Dir3=5174
+Dir4=5176
+
+'Espada Argentum Divina
+[ARMA13]
+Dir1=12402
+Dir2=12404
+Dir3=12401
+Dir4=12403
+
+'Espada Argentum Divina
+[ARMA14]
+Dir1=1358
+Dir2=1360
+Dir3=1357
+Dir4=1359
+
+'Vara de Lonshi
+[ARMA15]
+Dir1=14366
+Dir2=14368
+Dir3=14365
+Dir4=14367
+
+'Vara de Lonshi
+[ARMA16]
+Dir1=14392
+Dir2=14394
+Dir3=14391
+Dir4=14393
+
+'Martillo Sagrado
+[ARMA17]
+Dir1=16303
+Dir2=16305
+Dir3=16302
+Dir4=16304
+
+'Ballesta
+[ARMA18]
+Dir1=16329
+Dir2=16331
+Dir3=16328
+Dir4=16330
+
+'Baculo
+[ARMA19]
+Dir1=16356
+Dir2=16358
+Dir3=16355
+Dir4=16357
+
+'Arco Celeste
+[ARMA20]
+Dir1=16382
+Dir2=16384
+Dir3=16381
+Dir4=16383
+
+'Arco Rojo
+[ARMA21]
+Dir1=16409
+Dir2=16411
+Dir3=16408
+Dir4=16410
+
+'Maza Oscura
+[ARMA22]
+Dir1=17267
+Dir2=17269
+Dir3=17266
+Dir4=17268
+
+'Martillo Sagra2
+[ARMA23]
+Dir1=17293
+Dir2=17295
+Dir3=17292
+Dir4=17294
+
+'RompeCoco
+[ARMA24]
+Dir1=17334
+Dir2=17336
+Dir3=17333
+Dir4=17335
+[Arma2]
+Dir1=0
+Dir2=0
+Dir3=0
+Dir4=0
+
+'Baculo 2
+[ARMA25]
+Dir1=17361
+Dir2=17363
+Dir3=17360
+Dir4=17362
+
+'Arco U
+[ARMA26]
+Dir1=17646
+Dir2=17648
+Dir3=17645
+Dir4=17647
+
+'Vara A
+[ARMA27]
+Dir1=18029
+Dir2=18031
+Dir3=18028
+Dir4=18030

@@ -1,0 +1,8 @@
+Línea 29: la clase MSFlexGridLib.MSFlexGrid del control FlxGd no era una clase de control cargada.
+Línea 35: el nombre de la propiedad _ExtentX de FlxGd no es válido.
+Línea 36: el nombre de la propiedad _ExtentY de FlxGd no es válido.
+Línea 37: el nombre de la propiedad _Version de FlxGd no es válido.
+Línea 38: el nombre de la propiedad Cols de FlxGd no es válido.
+Línea 39: el nombre de la propiedad AllowBigSelection de FlxGd no es válido.
+Línea 40: el nombre de la propiedad ScrollTrack de FlxGd no es válido.
+Línea 41: el nombre de la propiedad AllowUserResizing de FlxGd no es válido.
