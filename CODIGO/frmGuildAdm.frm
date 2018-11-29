@@ -118,7 +118,7 @@ End Sub
 Private Sub Command1_Click()
 
 'If GuildsList.ListIndex = 0 Then Exit Sub
-Call VaginaJugosa("CLANDETAILS" & Trim$(ReadField(1, guildslist.List(guildslist.listIndex), Asc("("))))
+Call SendData("CLANDETAILS" & Trim$(ReadField(1, guildslist.List(guildslist.listIndex), Asc("("))))
 
 End Sub
 

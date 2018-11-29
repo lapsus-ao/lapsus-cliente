@@ -1330,7 +1330,7 @@ Case 1 'bajar
     If hlst.listIndex = hlst.ListCount - 1 Then Exit Sub
 End Select
 
-Call VaginaJugosa("DESPHE" & index + 1 & "," & hlst.listIndex + 1)
+Call SendData("DESPHE" & index + 1 & "," & hlst.listIndex + 1)
 
 Select Case index
 Case 0 'subir
@@ -1406,12 +1406,12 @@ Private Sub mnuEquipar_Click()
 End Sub
 
 Private Sub mnuNPCComerciar_Click()
-    VaginaJugosa ClientPackages.leftClick & tX & "," & tY
-    VaginaJugosa "/W7"
+    SendData ClientPackages.leftClick & tX & "," & tY
+    SendData "/W7"
 End Sub
 
 Private Sub mnuNpcDesc_Click()
-    VaginaJugosa ClientPackages.leftClick & tX & "," & tY
+    SendData ClientPackages.leftClick & tX & "," & tY
 End Sub
 
 Private Sub mnuTirar_Click()
@@ -1425,7 +1425,7 @@ End Sub
 
 Private Sub Minimap_MouseDown(Button As Integer, Shift As Integer, x As Single, y As Single)
 'CHOTS | Con click derecho te teleporta by Rubio93
-    If Button = vbRightButton Then Call VaginaJugosa("/TP " & UserMap & " " & CByte(x) + 3 & " " & CByte(y) + 3)
+    If Button = vbRightButton Then Call SendData("/TP " & UserMap & " " & CByte(x) + 3 & " " & CByte(y) + 3)
 End Sub
 
 Private Sub picSegK_Click()
@@ -1453,7 +1453,7 @@ End Sub
 Private Sub tirarItem()
     If (Inventario.SelectedItem > 0 And Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Or (Inventario.SelectedItem = FLAGORO) Then
         If Inventario.Amount(Inventario.SelectedItem) = 1 Then
-            VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & 1
+            SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & 1
         Else
            If Inventario.Amount(Inventario.SelectedItem) > 1 Then
             frmCantidad.Show , frmMain
@@ -1463,23 +1463,23 @@ Private Sub tirarItem()
 End Sub
 
 Private Sub AgarrarItem()
-    VaginaJugosa ClientPackages.agarrarObjeto
+    SendData ClientPackages.agarrarObjeto
 End Sub
 
 Private Sub equiparItem()
     If (Inventario.SelectedItem > 0) And (Inventario.SelectedItem < MAX_INVENTORY_SLOTS + 1) Then _
-        VaginaJugosa ClientPackages.equiparItem & Inventario.SelectedItem
+        SendData ClientPackages.equiparItem & Inventario.SelectedItem
 End Sub
 Private Sub cmdLanzar_Click()
 If pausa Then Exit Sub
 If Not PuedeApretarLanzar Then Exit Sub
 If hlst.List(hlst.listIndex) <> "(None)" And UserCanAttack = 1 Then
-      Call VaginaJugosa(ClientPackages.lanzarHechizo & hlst.listIndex + 1)
+      Call SendData(ClientPackages.lanzarHechizo & hlst.listIndex + 1)
 End If
 End Sub
 Private Sub CmdInfo_Click()
 If hlst.List(hlst.listIndex) <> "(None)" Then
-    Call VaginaJugosa("INFS" & hlst.listIndex + 1)
+    Call SendData("INFS" & hlst.listIndex + 1)
 End If
 End Sub
 
@@ -1502,11 +1502,11 @@ Private Sub Form_Click()
         If MouseShift = 0 Then
             If MouseBoton <> vbRightButton Then
                 If UsingSkill = 0 Then
-                    VaginaJugosa ClientPackages.leftClick & tX & "," & tY
+                    SendData ClientPackages.leftClick & tX & "," & tY
                 Else
                     frmMain.MousePointer = vbDefault
                     If ((UsingSkill = Magia Or UsingSkill = Proyectiles) And (UserCanAttack = 0 Or UserCanCombo = 0)) Or (pausa = True) Then Exit Sub
-                    VaginaJugosa ClientPackages.trabajoClick & tX & "," & tY & "," & UsingSkill
+                    SendData ClientPackages.trabajoClick & tX & "," & tY & "," & UsingSkill
                     If UsingSkill = Magia Or UsingSkill = Proyectiles Then
                         UserCanAttack = 0
                         UserCanCombo = 0
@@ -1519,7 +1519,7 @@ Private Sub Form_Click()
             End If
         ElseIf (MouseShift And 1) = 1 Then
             If MouseShift = vbLeftButton Then
-                Call VaginaJugosa("/TP " & UserMap & " " & tX & " " & tY)
+                Call SendData("/TP " & UserMap & " " & tX & " " & tY)
         End If
         End If
     End If
@@ -1528,8 +1528,8 @@ End Sub
 
 Private Sub Form_DblClick()
     If Not frmForo.Visible Then
-        VaginaJugosa ClientPackages.rightClick & tX & "," & tY
-        Call VaginaJugosa("/MOV")
+        SendData ClientPackages.rightClick & tX & "," & tY
+        Call SendData("/MOV")
     End If
 End Sub
 
@@ -1558,20 +1558,20 @@ DirectX.SetEvent DXEvent
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleNames)
                     Nombres = Not Nombres
                 Case CustomKeys.BindedKey(eKeyType.mKeyTamAnimal)
-                    Call VaginaJugosa(ClientPackages.usarSkill & Domar)
+                    Call SendData(ClientPackages.usarSkill & Domar)
                 Case CustomKeys.BindedKey(eKeyType.mKeySteal)
-                    Call VaginaJugosa(ClientPackages.usarSkill & Robar)
+                    Call SendData(ClientPackages.usarSkill & Robar)
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleSafeMode)
                     AddtoRichTextBox frmMain.RecTxt, "Para activar o desactivar el seguro utiliza la tecla '*' (asterisco)", 255, 255, 255, False, False, False
                 Case CustomKeys.BindedKey(eKeyType.mKeyToggleCombatMode)
-                    Call VaginaJugosa("/SEGC")
+                    Call SendData("/SEGC")
                 Case CustomKeys.BindedKey(eKeyType.mKeyHide)
-                    If UserCanCombo = 1 And UserCanAttack = 1 Then Call VaginaJugosa(ClientPackages.usarSkill & Ocultarse)
+                    If UserCanCombo = 1 And UserCanAttack = 1 Then Call SendData(ClientPackages.usarSkill & Ocultarse)
                 Case CustomKeys.BindedKey(eKeyType.mKeyDropObject)
                     Call tirarItem
                 Case CustomKeys.BindedKey(eKeyType.mKeyRequestRefresh)
                     If UserPuedeRefrescar Then
-                        Call VaginaJugosa("LAG")
+                        Call SendData("LAG")
                         UserPuedeRefrescar = False
                         Beep
                     End If
@@ -1593,11 +1593,11 @@ DirectX.SetEvent DXEvent
                     SendTxt.SetFocus
                 End If
             Case vbKeyMultiply:
-                Call VaginaJugosa("/SEG")
+                Call SendData("/SEG")
             Case CustomKeys.BindedKey(eKeyType.mKeyToggleResuscitationSafe)
-                If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then Call VaginaJugosa("/SEGR")
+                If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then Call SendData("/SEGR")
             Case eKeyType.mKeyWorkMacro
-                If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then Call VaginaJugosa("/SEGK")
+                If (Not SendTxt.Visible) And (Not SendCMSTXT.Visible) Then Call SendData("/SEGK")
             Case CustomKeys.BindedKey(eKeyType.mKeyTalkWithGuild)
                 If SendTxt.Visible Then Exit Sub
                 If Not frmCantidad.Visible Then
@@ -1605,25 +1605,25 @@ DirectX.SetEvent DXEvent
                     SendCMSTXT.SetFocus
                 End If
             Case CustomKeys.BindedKey(eKeyType.mKeyToggleFPS)
-                Call VaginaJugosa("/W1")
+                Call SendData("/W1")
             Case CustomKeys.BindedKey(eKeyType.mKeyResucitar):
-                Call VaginaJugosa("/W3")
+                Call SendData("/W3")
             Case CustomKeys.BindedKey(eKeyType.mKeyExitGame)
-                Call VaginaJugosa("/SALIR")
+                Call SendData("/SALIR")
             Case CustomKeys.BindedKey(eKeyType.mKeyAttack)
                 If (UserCanCombo = 1 And UserCanAttack) And _
                    (Not UserMeditar) Then
-                        VaginaJugosa ClientPackages.atacar
+                        SendData ClientPackages.atacar
                         UserCanCombo = 0
                 End If
             Case CustomKeys.BindedKey(eKeyType.mKeyShowOptions)
                 Call frmOpciones.Show(vbModeless, frmMain)
             Case CustomKeys.BindedKey(eKeyType.mKeyBanco):
-                Call VaginaJugosa("/W5")
+                Call SendData("/W5")
             Case CustomKeys.BindedKey(eKeyType.mKeyMeditate)
-                Call VaginaJugosa("/W6")
+                Call SendData("/W6")
             Case CustomKeys.BindedKey(eKeyType.mKeyComerciar):
-                Call VaginaJugosa("/W7")
+                Call SendData("/W7")
             Case CustomKeys.BindedKey(eKeyType.mKeyTakeScreenShot):
                 Call ScreenCapture
             Case CustomKeys.BindedKey(eKeyType.mKeyCastSpellMacro)
@@ -1633,7 +1633,7 @@ DirectX.SetEvent DXEvent
                     Call TerminarTrabajo
                 End If
             Case vbKeyF11:
-                Call VaginaJugosa("/INVISIBLE")
+                Call SendData("/INVISIBLE")
 
         End Select
         
@@ -1765,13 +1765,13 @@ Private Sub Image1_Click(index As Integer)
             '[END]
         Case 1
             'CHOTS | Full estadisticas
-            VaginaJugosa "XEST"
+            SendData "XEST"
         Case 2
             If Not frmGuildLeader.Visible Then _
-                Call VaginaJugosa("GLINFO")
+                Call SendData("GLINFO")
         Case 3
             If Not frmPuntos.Visible Then _
-                Call VaginaJugosa("PTINFO")
+                Call SendData("PTINFO")
     End Select
 End Sub
 
@@ -1927,14 +1927,14 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
                 KeyCode = 0
                 SendTxt.Visible = False
             ElseIf UCase$(stxtbuffer) = "/ONLINE" Then
-                Call VaginaJugosa("/W1")
+                Call SendData("/W1")
                 stxtbuffer = ""
                 SendTxt.Text = ""
                 KeyCode = 0
                 SendTxt.Visible = False
             ElseIf UCase$(stxtbuffer) = "/CONTAR" Then
                 Cont = 3
-                Call VaginaJugosa(ClientPackages.hablar & Cont)
+                Call SendData(ClientPackages.hablar & Cont)
                 Cont = 2
                 frmMain.tmrContar.Enabled = True
                 stxtbuffer = ""
@@ -1942,19 +1942,19 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
                 KeyCode = 0
                 SendTxt.Visible = False
             ElseIf UCase$(stxtbuffer) = "/COMERCIAR" Then
-                Call VaginaJugosa("/W7")
+                Call SendData("/W7")
                 stxtbuffer = ""
                 SendTxt.Text = ""
                 KeyCode = 0
                 SendTxt.Visible = False
             ElseIf UCase$(stxtbuffer) = "/GEMA" Or UCase$(stxtbuffer) = "/GEMAS" Then
-                Call VaginaJugosa("/LIBERAR")
+                Call SendData("/LIBERAR")
                 stxtbuffer = ""
                 SendTxt.Text = ""
                 KeyCode = 0
                 SendTxt.Visible = False
             ElseIf UCase$(stxtbuffer) = "/FUNDARCLAN" Then
-                Call VaginaJugosa("/FUNDARCLAN GM")
+                Call SendData("/FUNDARCLAN GM")
                 stxtbuffer = ""
                 SendTxt.Text = ""
                 KeyCode = 0
@@ -1962,19 +1962,19 @@ Private Sub SendTxt_KeyUp(KeyCode As Integer, Shift As Integer)
                 
                 Exit Sub
             End If
-            Call VaginaJugosa(stxtbuffer)
+            Call SendData(stxtbuffer)
     
        'Shout
         ElseIf Left$(stxtbuffer, 1) = "-" Then
-            Call VaginaJugosa(ClientPackages.gritar & Right$(stxtbuffer, Len(stxtbuffer) - 1))
+            Call SendData(ClientPackages.gritar & Right$(stxtbuffer, Len(stxtbuffer) - 1))
 
         'Whisper
         ElseIf Left$(stxtbuffer, 1) = "\" Then
-            Call VaginaJugosa("\" & Right$(stxtbuffer, Len(stxtbuffer) - 1))
+            Call SendData("\" & Right$(stxtbuffer, Len(stxtbuffer) - 1))
 
         'Say
         ElseIf stxtbuffer <> "" Then
-            Call VaginaJugosa(ClientPackages.hablar & stxtbuffer)
+            Call SendData(ClientPackages.hablar & stxtbuffer)
 
         End If
 
@@ -1991,7 +1991,7 @@ Private Sub SendCMSTXT_KeyUp(KeyCode As Integer, Shift As Integer)
     If KeyCode = vbKeyReturn Then
         'Say
         If stxtbuffercmsg <> "" Then
-            Call VaginaJugosa("/CMSG " & stxtbuffercmsg)
+            Call SendData("/CMSG " & stxtbuffercmsg)
         End If
 
         stxtbuffercmsg = ""
@@ -2036,29 +2036,29 @@ Private Sub socket1_Connect()
     
     'If frmCrearPersonaje.Visible Then
     If EstadoLogin = E_MODO.CrearNuevoPj Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
 #If SegudidadAlkon Then
         Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
 #End If
     'ElseIf Not frmRecuperar.Visible Then
     ElseIf EstadoLogin = E_MODO.Normal Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
 #If SegudidadAlkon Then
         Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
 #End If
     ElseIf EstadoLogin = E_MODO.BorrarPj Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
 #If SegudidadAlkon Then
         Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
 #End If
     ElseIf EstadoLogin = E_MODO.Dados Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
 #If SegudidadAlkon Then
         Call MI(CualMI).Inicializar(RandomNumber(1, 1000), 10000)
 #End If
     'Else
     ElseIf EstadoLogin = E_MODO.RecuperarPass Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     End If
 End Sub
 
@@ -2196,7 +2196,7 @@ Private Sub socket1_Read(DataLength As Integer, IsUrgent As Integer)
     'Send buffer to Handle data
     For loopc = 1 To CR
         'Call LogCustom("HandleData: " & rBuffer(loopc))
-        Call PeneVenoso(rBuffer(loopc))
+        Call HandleData(rBuffer(loopc))
     Next loopc
 End Sub
 
@@ -2258,10 +2258,10 @@ Case 0 'Inventario
 Case 1 'Menu del ViewPort del engine
     Select Case Sel
     Case 0 'Nombre
-        VaginaJugosa ClientPackages.leftClick & tX & "," & tY
+        SendData ClientPackages.leftClick & tX & "," & tY
     Case 1 'Comerciar
-        Call VaginaJugosa(ClientPackages.leftClick & tX & "," & tY)
-        Call VaginaJugosa("/W7")
+        Call SendData(ClientPackages.leftClick & tX & "," & tY)
+        Call SendData("/W7")
     End Select
 End Select
 End Sub
@@ -2276,9 +2276,9 @@ End Sub
 Private Sub tmrContar_Timer()
 
 If Cont > 0 Then
-    Call VaginaJugosa(ClientPackages.hablar & Cont)
+    Call SendData(ClientPackages.hablar & Cont)
 Else
-    Call VaginaJugosa(ClientPackages.hablar & "Ya !")
+    Call SendData(ClientPackages.hablar & "Ya !")
     Cont = 3
     tmrContar.Enabled = False
 End If
@@ -2340,7 +2340,7 @@ Call MsgBox("Codigo Correcto, Disculpe las Molestias")
 End Sub
 
 Private Sub tmrDenu_Timer()
-   Call VaginaJugosa("CIN")
+   Call SendData("CIN")
    tmrDenu.Enabled = False
 End Sub
 
@@ -2409,15 +2409,15 @@ Private Sub Winsock1_Connect()
    Second.Enabled = True
 
     If EstadoLogin = E_MODO.CrearNuevoPj Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     ElseIf EstadoLogin = E_MODO.Normal Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     ElseIf EstadoLogin = E_MODO.Dados Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     ElseIf EstadoLogin = E_MODO.BorrarPj Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     ElseIf EstadoLogin = E_MODO.RecuperarPass Then
-        Call VaginaJugosa(ClientPackages.getValCode)
+        Call SendData(ClientPackages.getValCode)
     End If
 End Sub
 
@@ -2468,7 +2468,7 @@ Private Sub Winsock1_DataArrival(ByVal bytesTotal As Long)
 
     'Send buffer to Handle data
     For loopc = 1 To CR
-        Call PeneVenoso(rBuffer(loopc))
+        Call HandleData(rBuffer(loopc))
     Next loopc
 End Sub
 

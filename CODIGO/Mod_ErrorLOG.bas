@@ -55,7 +55,7 @@ Close #nfile
 End Sub
 
 
-Sub PeneVenoso(ByVal semen As String)
+Sub HandleData(ByVal rData As String)
     On Error Resume Next
     
     Dim RetVal As Variant
@@ -75,7 +75,7 @@ Sub PeneVenoso(ByVal semen As String)
     
     
     Dim sData As String
-    sData = UCase$(semen)
+    sData = UCase$(rData)
     
     Select Case sData
         'CHOTS | Optimizaciones de mensajes
@@ -628,19 +628,19 @@ Sub PeneVenoso(ByVal semen As String)
 
     Select Case Left(sData, 1)
         Case ServerPackages.moverChar
-            semen = Right$(semen, Len(semen) - 1)
+            rData = Right$(rData, Len(rData) - 1)
 
 #If SeguridadAlkon Then
             'obtengo todo
-            Call CheatingDeath.MoveCharDecrypt(semen, charindex, x, y)
+            Call CheatingDeath.MoveCharDecrypt(rData, charindex, x, y)
 #Else
-            charindex = Val(ReadField(1, semen, Asc(",")))
-            x = Val(ReadField(2, semen, Asc(",")))
-            y = Val(ReadField(3, semen, Asc(",")))
+            charindex = Val(ReadField(1, rData, Asc(",")))
+            x = Val(ReadField(2, rData, Asc(",")))
+            y = Val(ReadField(3, rData, Asc(",")))
 #End If
 
             'antigua codificacion del mensaje (decodificada x un chitero)
-            'CharIndex = Asc(Mid$(semen, 1, 1)) * 64 + (Asc(Mid$(semen, 2, 1)) And &HFC&) / 4
+            'CharIndex = Asc(Mid$(rData, 1, 1)) * 64 + (Asc(Mid$(rData, 2, 1)) And &HFC&) / 4
 
             ' CONSTANTES TODO: De donde sale el 40-49 ?
             
@@ -660,19 +660,19 @@ Sub PeneVenoso(ByVal semen As String)
             Call RefreshAllChars
             Exit Sub
         Case ServerPackages.moverNpc
-            semen = Right$(semen, Len(semen) - 1)
+            rData = Right$(rData, Len(rData) - 1)
             
 #If SeguridadAlkon Then
             'obtengo todo
-            Call CheatingDeath.MoveNPCDecrypt(semen, charindex, x, y, Left$(sData, 1) <> "*")
+            Call CheatingDeath.MoveNPCDecrypt(rData, charindex, x, y, Left$(sData, 1) <> "*")
 #Else
-            charindex = Val(ReadField(1, semen, Asc(",")))
-            x = Val(ReadField(2, semen, Asc(",")))
-            y = Val(ReadField(3, semen, Asc(",")))
+            charindex = Val(ReadField(1, rData, Asc(",")))
+            x = Val(ReadField(2, rData, Asc(",")))
+            y = Val(ReadField(3, rData, Asc(",")))
 #End If
             
             'antigua codificacion del mensaje (decodificada x un chitero)
-            'CharIndex = Asc(Mid$(semen, 1, 1)) * 64 + (Asc(Mid$(semen, 2, 1)) And &HFC&) / 4
+            'CharIndex = Asc(Mid$(rData, 1, 1)) * 64 + (Asc(Mid$(rData, 2, 1)) And &HFC&) / 4
             
 '            If charlist(CharIndex).Body.Walk(1).GrhIndex = 4747 Then
 '                Debug.Print "hola"
@@ -692,7 +692,7 @@ Sub PeneVenoso(ByVal semen As String)
             End If
             
             Call MoveCharbyPos(charindex, x, y)
-            'Call MoveCharbyPos(CharIndex, Asc(Mid$(semen, 3, 1)), Asc(Mid$(semen, 4, 1)))
+            'Call MoveCharbyPos(CharIndex, Asc(Mid$(rData, 3, 1)), Asc(Mid$(rData, 4, 1)))
             
             Call RefreshAllChars
             Exit Sub
@@ -723,8 +723,8 @@ Sub PeneVenoso(ByVal semen As String)
             End Select
             Exit Sub
         Case ServerPackages.cargarMapa
-            semen = Right$(semen, Len(semen) - 2)
-            UserMap = ReadField(1, semen, 44)
+            rData = Right$(rData, Len(rData) - 2)
+            UserMap = ReadField(1, rData, 44)
             'Obtiene la version del mapa
             
             If FileExist(DirMapas & "Mapa" & UserMap & ".map", vbNormal) Then
@@ -732,7 +732,7 @@ Sub PeneVenoso(ByVal semen As String)
                 Seek #1, 1
                 Get #1, , tempint
                 Close #1
-'                If tempint = Val(ReadField(2, semen, 44)) Then
+'                If tempint = Val(ReadField(2, rData, 44)) Then
                     'Si es la vers correcta cambiamos el mapa
                     Call SwitchMap(UserMap)
                     If bLluvia(UserMap) = 0 Then
@@ -760,82 +760,82 @@ Sub PeneVenoso(ByVal semen As String)
             Exit Sub
         
         Case ServerPackages.updatePos
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             MapData(UserPos.x, UserPos.y).charindex = 0
-            UserPos.x = CInt(ReadField(1, semen, 44))
-            UserPos.y = CInt(ReadField(2, semen, 44))
+            UserPos.x = CInt(ReadField(1, rData, 44))
+            UserPos.y = CInt(ReadField(2, rData, 44))
             MapData(UserPos.x, UserPos.y).charindex = UserCharIndex
             charlist(UserCharIndex).Pos = UserPos
             frmMain.lblCord.Caption = UserMap & " | " & UserPos.x & " | " & UserPos.y
             Exit Sub
         
         Case "N2" ' <<--- Npc nos impacto (Ahorramos ancho de banda)
-            semen = Right$(semen, Len(semen) - 2)
-            i = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            i = Val(ReadField(1, rData, 44))
             Select Case i
                 Case bCabeza
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CABEZA & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoIzquierdo
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoDerecho
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_BRAZO_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaIzquierda
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaDerecha
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_PIERNA_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bTorso
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_TORSO & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
             End Select
             Exit Sub
         Case "U2" ' <<--- El user ataco un npc e impacato
-            semen = Right$(semen, Len(semen) - 2)
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & semen & MENSAJE_2, 255, 0, 0, True, False, False)
+            rData = Right$(rData, Len(rData) - 2)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_GOLPE_CRIATURA_1 & rData & MENSAJE_2, 255, 0, 0, True, False, False)
             Exit Sub
         Case "U3" ' <<--- El user ataco un user y falla
-            semen = Right$(semen, Len(semen) - 2)
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & semen & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
+            rData = Right$(rData, Len(rData) - 2)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & rData & MENSAJE_ATAQUE_FALLO, 255, 0, 0, True, False, False)
             Exit Sub
         Case "N4" ' <<--- user nos impacto
-            semen = Right$(semen, Len(semen) - 2)
-            i = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            i = Val(ReadField(1, rData, 44))
             Select Case i
                 Case bCabeza
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_CABEZA & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_CABEZA & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoIzquierdo
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_BRAZO_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoDerecho
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_BRAZO_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaIzquierda
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_PIERNA_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaDerecha
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_PIERNA_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bTorso
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, semen, 44) & MENSAJE_RECIVE_IMPACTO_TORSO & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_1 & ReadField(3, rData, 44) & MENSAJE_RECIVE_IMPACTO_TORSO & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
             End Select
             Exit Sub
         Case "N5" ' <<--- impactamos un user
-            semen = Right$(semen, Len(semen) - 2)
-            i = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            i = Val(ReadField(1, rData, 44))
             Select Case i
                 Case bCabeza
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_CABEZA & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_CABEZA & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoIzquierdo
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_BRAZO_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bBrazoDerecho
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_BRAZO_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaIzquierda
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_PIERNA_IZQ & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bPiernaDerecha
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_PIERNA_DER & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
                 Case bTorso
-                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, semen, 44) & MENSAJE_PRODUCE_IMPACTO_TORSO & Val(ReadField(2, semen, 44)), 255, 0, 0, True, False, False)
+                    Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_PRODUCE_IMPACTO_1 & ReadField(3, rData, 44) & MENSAJE_PRODUCE_IMPACTO_TORSO & Val(ReadField(2, rData, 44)), 255, 0, 0, True, False, False)
             End Select
             Exit Sub
         Case ServerPackages.dialogo
         'CHOTS | Modificado por CHOTS para mejorar el ancho de banda
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             Dim iuser As Integer
-            iuser = Val(ReadField(3, semen, 176))
+            iuser = Val(ReadField(3, rData, 176))
             Dim r As Byte
             Dim g As Byte
             Dim b As Byte
@@ -843,7 +843,7 @@ Sub PeneVenoso(ByVal semen As String)
             Dim c As Byte
             Dim num As Byte
             
-            num = Val(ReadField(2, semen, 126))
+            num = Val(ReadField(2, rData, 126))
             
             Select Case num
             Case 1 'CHOTS | Talk
@@ -1054,21 +1054,21 @@ Sub PeneVenoso(ByVal semen As String)
 
             
             If iuser > 0 Then
-                Dialogos.CrearDialogo ReadField(2, semen, 176), iuser, Val(ReadField(1, semen, 176))
+                Dialogos.CrearDialogo ReadField(2, rData, 176), iuser, Val(ReadField(1, rData, 176))
             Else
                 If PuedoQuitarFoco Then
-                    AddtoRichTextBox frmMain.RecTxt, ReadField(1, semen, 126), r, g, b, N, c
+                    AddtoRichTextBox frmMain.RecTxt, ReadField(1, rData, 126), r, g, b, N, c
                 End If
             End If
 
             Exit Sub
         Case ServerPackages.dialogoConsola
         'CHOTS | Modificado por CHOTS para mejorar el ancho de banda
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             
-            iuser = Val(ReadField(3, semen, 176))
+            iuser = Val(ReadField(3, rData, 176))
             
-            num = Val(ReadField(2, semen, 126))
+            num = Val(ReadField(2, rData, 126))
             
             Select Case num
             Case 1 'CHOTS | Talk
@@ -1279,9 +1279,9 @@ Sub PeneVenoso(ByVal semen As String)
 
             If iuser = 0 Then
                 If PuedoQuitarFoco And Not DialogosClanes.Activo Then
-                    AddtoRichTextBox frmMain.RecTxt, ReadField(1, semen, 126), r, g, b, N, c
+                    AddtoRichTextBox frmMain.RecTxt, ReadField(1, rData, 126), r, g, b, N, c
                 ElseIf DialogosClanes.Activo Then
-                    DialogosClanes.PushBackText ReadField(1, semen, 126)
+                    DialogosClanes.PushBackText ReadField(1, rData, 126)
                 End If
             End If
 
@@ -1289,36 +1289,36 @@ Sub PeneVenoso(ByVal semen As String)
         
         Case "!G"
             'CHOTS | Guerras
-            semen = Right$(semen, Len(semen) - 2)
-            DialogosClanes.PushBackText semen
+            rData = Right$(rData, Len(rData) - 2)
+            DialogosClanes.PushBackText rData
             Exit Sub
 
         Case "!!"                ' >>>>> Msgbox :: !!
             If PuedoQuitarFoco Then
-                semen = Right$(semen, Len(semen) - 2)
-                frmMensaje.msg.Caption = semen
+                rData = Right$(rData, Len(rData) - 2)
+                frmMensaje.msg.Caption = rData
                 frmMensaje.Show
             End If
             Exit Sub
         Case "IU"                ' >>>>> Indice de Usuario en Server :: IU
-            semen = Right$(semen, Len(semen) - 2)
-            Userindex = Val(semen)
+            rData = Right$(rData, Len(rData) - 2)
+            Userindex = Val(rData)
             Exit Sub
         Case "IP"                ' >>>>> Indice de Personaje de Usuario :: IP
-            semen = Right$(semen, Len(semen) - 2)
-            UserCharIndex = Val(semen)
+            rData = Right$(rData, Len(rData) - 2)
+            UserCharIndex = Val(rData)
             UserPos = charlist(UserCharIndex).Pos
             frmMain.lblCord.Caption = UserMap & " | " & UserPos.x & " | " & UserPos.y
             Exit Sub
         Case ServerPackages.crearNpc
-            semen = Right$(semen, Len(semen) - 2)
-            charindex = ReadField(4, semen, 44)
-            x = ReadField(5, semen, 44)
-            y = ReadField(6, semen, 44)
+            rData = Right$(rData, Len(rData) - 2)
+            charindex = ReadField(4, rData, 44)
+            x = ReadField(5, rData, 44)
+            y = ReadField(6, rData, 44)
             
-            charlist(charindex).fX = Val(ReadField(9, semen, 44))
-            charlist(charindex).FxLoopTimes = Val(ReadField(10, semen, 44))
-            charlist(charindex).Nombre = ReadField(12, semen, 44)
+            charlist(charindex).fX = Val(ReadField(9, rData, 44))
+            charlist(charindex).FxLoopTimes = Val(ReadField(10, rData, 44))
+            charlist(charindex).Nombre = ReadField(12, rData, 44)
             'CHOTS | Agrego el clan aca
             If InStr(charlist(charindex).Nombre, "<") > 0 And InStr(charlist(charindex).Nombre, ">") > 0 Then
                 charlist(charindex).Clan = mid(charlist(charindex).Nombre, InStr(charlist(charindex).Nombre, "<"))
@@ -1326,23 +1326,23 @@ Sub PeneVenoso(ByVal semen As String)
             Else
                 charlist(charindex).Clan = ""
             End If
-            charlist(charindex).Criminal = Val(ReadField(13, semen, 44))
-            charlist(charindex).priv = Val(ReadField(14, semen, 44))
+            charlist(charindex).Criminal = Val(ReadField(13, rData, 44))
+            charlist(charindex).priv = Val(ReadField(14, rData, 44))
             'CHOTS | Optimizamos colores
             Call SetNameColor(charindex)
-            Call MakeChar(charindex, ReadField(1, semen, 44), ReadField(2, semen, 44), ReadField(3, semen, 44), x, y, Val(ReadField(7, semen, 44)), Val(ReadField(8, semen, 44)), Val(ReadField(11, semen, 44)))
-            charlist(charindex).BodyNum = ReadField(1, semen, 44)
+            Call MakeChar(charindex, ReadField(1, rData, 44), ReadField(2, rData, 44), ReadField(3, rData, 44), x, y, Val(ReadField(7, rData, 44)), Val(ReadField(8, rData, 44)), Val(ReadField(11, rData, 44)))
+            charlist(charindex).BodyNum = ReadField(1, rData, 44)
             Call RefreshAllChars
             Exit Sub
         Case ServerPackages.crearChar
-            semen = Right$(semen, Len(semen) - 2)
-            charindex = ReadField(4, semen, 44)
-            x = ReadField(5, semen, 44)
-            y = ReadField(6, semen, 44)
+            rData = Right$(rData, Len(rData) - 2)
+            charindex = ReadField(4, rData, 44)
+            x = ReadField(5, rData, 44)
+            y = ReadField(6, rData, 44)
             
-            charlist(charindex).fX = Val(ReadField(9, semen, 44))
-            charlist(charindex).FxLoopTimes = Val(ReadField(10, semen, 44))
-            charlist(charindex).Nombre = ReadField(12, semen, 44)
+            charlist(charindex).fX = Val(ReadField(9, rData, 44))
+            charlist(charindex).FxLoopTimes = Val(ReadField(10, rData, 44))
+            charlist(charindex).Nombre = ReadField(12, rData, 44)
             'CHOTS | Agrego el clan aca
             If InStr(charlist(charindex).Nombre, "<") > 0 And InStr(charlist(charindex).Nombre, ">") > 0 Then
                 charlist(charindex).Clan = mid(charlist(charindex).Nombre, InStr(charlist(charindex).Nombre, "<"))
@@ -1350,23 +1350,23 @@ Sub PeneVenoso(ByVal semen As String)
             Else
                 charlist(charindex).Clan = ""
             End If
-            charlist(charindex).Criminal = Val(ReadField(13, semen, 44))
-            charlist(charindex).priv = Val(ReadField(14, semen, 44))
+            charlist(charindex).Criminal = Val(ReadField(13, rData, 44))
+            charlist(charindex).priv = Val(ReadField(14, rData, 44))
             'CHOTS | Optimizamos colores
             Call SetNameColor(charindex)
-            Call MakeChar(charindex, ReadField(1, semen, 44), ReadField(2, semen, 44), ReadField(3, semen, 44), x, y, Val(ReadField(7, semen, 44)), Val(ReadField(8, semen, 44)), Val(ReadField(11, semen, 44)))
+            Call MakeChar(charindex, ReadField(1, rData, 44), ReadField(2, rData, 44), ReadField(3, rData, 44), x, y, Val(ReadField(7, rData, 44)), Val(ReadField(8, rData, 44)), Val(ReadField(11, rData, 44)))
             Call RefreshAllChars
             Exit Sub
             
         Case ServerPackages.borrarChar
-            semen = Right$(semen, Len(semen) - 2)
-            Call EraseChar(Val(semen))
-            Call Dialogos.QuitarDialogo(Val(semen))
+            rData = Right$(rData, Len(rData) - 2)
+            Call EraseChar(Val(rData))
+            Call Dialogos.QuitarDialogo(Val(rData))
             Call RefreshAllChars
             Exit Sub
         Case ServerPackages.moverPersonaje
-            semen = Right$(semen, Len(semen) - 2)
-            charindex = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            charindex = Val(ReadField(1, rData, 44))
             
             If charlist(charindex).fX >= 40 And charlist(charindex).fX <= 49 Then   'si esta meditando
                 charlist(charindex).fX = 0
@@ -1377,78 +1377,78 @@ Sub PeneVenoso(ByVal semen As String)
                 Call DoPasosFx(charindex)
             End If
             
-            Call MoveCharbyPos(charindex, ReadField(2, semen, 44), ReadField(3, semen, 44))
+            Call MoveCharbyPos(charindex, ReadField(2, rData, 44), ReadField(3, rData, 44))
             
             Call RefreshAllChars
             Exit Sub
         Case "CP"             ' >>>>> Cambiar Apariencia Personaje :: CP
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             
-            charindex = Val(ReadField(1, semen, 44))
-            charlist(charindex).muerto = Val(ReadField(3, semen, 44)) = 500
-            charlist(charindex).Body = BodyData(Val(ReadField(2, semen, 44)))
-            charlist(charindex).Head = HeadData(Val(ReadField(3, semen, 44)))
-            charlist(charindex).Heading = Val(ReadField(4, semen, 44))
-            charlist(charindex).fX = Val(ReadField(7, semen, 44))
-            charlist(charindex).FxLoopTimes = Val(ReadField(8, semen, 44))
-            tempint = Val(ReadField(5, semen, 44))
+            charindex = Val(ReadField(1, rData, 44))
+            charlist(charindex).muerto = Val(ReadField(3, rData, 44)) = 500
+            charlist(charindex).Body = BodyData(Val(ReadField(2, rData, 44)))
+            charlist(charindex).Head = HeadData(Val(ReadField(3, rData, 44)))
+            charlist(charindex).Heading = Val(ReadField(4, rData, 44))
+            charlist(charindex).fX = Val(ReadField(7, rData, 44))
+            charlist(charindex).FxLoopTimes = Val(ReadField(8, rData, 44))
+            tempint = Val(ReadField(5, rData, 44))
             If tempint <> 0 Then charlist(charindex).Arma = WeaponAnimData(tempint)
-            tempint = Val(ReadField(6, semen, 44))
+            tempint = Val(ReadField(6, rData, 44))
             If tempint <> 0 Then charlist(charindex).Escudo = ShieldAnimData(tempint)
-            tempint = Val(ReadField(9, semen, 44))
+            tempint = Val(ReadField(9, rData, 44))
             If tempint <> 0 Then charlist(charindex).Casco = CascoAnimData(tempint)
 
             Call RefreshAllChars
             Exit Sub
         Case "HO"            ' >>>>> Crear un Objeto
-            semen = Right$(semen, Len(semen) - 2)
-            x = Val(ReadField(2, semen, 44))
-            y = Val(ReadField(3, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            x = Val(ReadField(2, rData, 44))
+            y = Val(ReadField(3, rData, 44))
             'ID DEL OBJ EN EL CLIENTE
-            MapData(x, y).ObjGrh.GrhIndex = Val(ReadField(1, semen, 44))
+            MapData(x, y).ObjGrh.GrhIndex = Val(ReadField(1, rData, 44))
             InitGrh MapData(x, y).ObjGrh, MapData(x, y).ObjGrh.GrhIndex
             Exit Sub
         Case "BO"           ' >>>>> Borrar un Objeto
-            semen = Right$(semen, Len(semen) - 2)
-            x = Val(ReadField(1, semen, 44))
-            y = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            x = Val(ReadField(1, rData, 44))
+            y = Val(ReadField(2, rData, 44))
             MapData(x, y).ObjGrh.GrhIndex = 0
             Exit Sub
         Case "BQ"           ' >>>>> Bloquear Posición
             'Dim b As Byte
-            semen = Right$(semen, Len(semen) - 2)
-            MapData(Val(ReadField(1, semen, 44)), Val(ReadField(2, semen, 44))).Blocked = Val(ReadField(3, semen, 44))
+            rData = Right$(rData, Len(rData) - 2)
+            MapData(Val(ReadField(1, rData, 44)), Val(ReadField(2, rData, 44))).Blocked = Val(ReadField(3, rData, 44))
             Exit Sub
         Case "TM"           ' >>>>> Play un MIDI :: TM
-            semen = Right$(semen, Len(semen) - 2)
-            currentMidi = Val(ReadField(1, semen, 45))
+            rData = Right$(rData, Len(rData) - 2)
+            currentMidi = Val(ReadField(1, rData, 45))
                 If currentMidi <> 0 Then
-                    semen = Right$(semen, Len(semen) - Len(ReadField(1, semen, 45)))
-                    If Len(semen) > 0 Then
-                        Call Audio.PlayMIDI(CStr(currentMidi) & ".mid", Val(Right$(semen, Len(semen) - 1)))
+                    rData = Right$(rData, Len(rData) - Len(ReadField(1, rData, 45)))
+                    If Len(rData) > 0 Then
+                        Call Audio.PlayMIDI(CStr(currentMidi) & ".mid", Val(Right$(rData, Len(rData) - 1)))
                     Else
                         Call Audio.PlayMIDI(CStr(currentMidi) & ".mid")
                     End If
                 End If
             Exit Sub
         Case "TW"          ' >>>>> Play un WAV :: TW
-                semen = Right$(semen, Len(semen) - 2)
-                 Call Audio.PlayWave(semen & ".wav")
+                rData = Right$(rData, Len(rData) - 2)
+                 Call Audio.PlayWave(rData & ".wav")
             Exit Sub
         Case "PT" 'CHOTS | Puntos de Clan
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             Dim puntos As Integer
             Dim Miembros As Byte
             Dim NombresMiembros As String
             
-            puntos = Val(ReadField(1, semen, 44))
-            Miembros = Val(ReadField(2, semen, 44))
+            puntos = Val(ReadField(1, rData, 44))
+            Miembros = Val(ReadField(2, rData, 44))
             
             
             frmPuntos.lblPuntos.Caption = puntos
             If Miembros <> 0 Then
                 
-                NombresMiembros = ReadField(3, semen, 44)
+                NombresMiembros = ReadField(3, rData, 44)
                 For i = 1 To Miembros
                     frmPuntos.lstClan.AddItem ReadField(i, NombresMiembros, Asc("@"))
                 Next i
@@ -1460,8 +1460,8 @@ Sub PeneVenoso(ByVal semen As String)
             frmPuntos.Show
             Exit Sub
         Case "GL" 'Lista de guilds
-            semen = Right$(semen, Len(semen) - 2)
-            Call frmGuildAdm.ParseGuildList(semen)
+            rData = Right$(rData, Len(rData) - 2)
+            Call frmGuildAdm.ParseGuildList(rData)
             Exit Sub
         Case "FO"          ' >>>>> Play un WAV :: TW
             bFogata = True
@@ -1471,11 +1471,11 @@ Sub PeneVenoso(ByVal semen As String)
             Exit Sub
             
     Case "MÑ"
-            semen = Right$(semen, Len(semen) - 2)
+            rData = Right$(rData, Len(rData) - 2)
             Dim EspiadoMaxMan As Integer
             Dim EspiadoMinMan As Integer
-            EspiadoMaxMan = Val(ReadField(2, semen, 44))
-            EspiadoMinMan = Val(ReadField(1, semen, 44))
+            EspiadoMaxMan = Val(ReadField(2, rData, 44))
+            EspiadoMinMan = Val(ReadField(1, rData, 44))
             frmEspia.man.Width = (EspiadoMinMan / EspiadoMaxMan) * 4080
             frmEspia.lblMan.Caption = EspiadoMinMan & "/" & EspiadoMaxMan
             Exit Sub
@@ -1485,8 +1485,8 @@ Sub PeneVenoso(ByVal semen As String)
             Exit Sub
 
     Case "MN"
-            semen = Right$(semen, Len(semen) - 2)
-            SetMana (Val(semen))
+            rData = Right$(rData, Len(rData) - 2)
+            SetMana (Val(rData))
             Exit Sub
         Case "CÑ"
             CambioDeArea Asc(mid$(sData, 3, 1)), Asc(mid$(sData, 4, 1))
@@ -1496,21 +1496,21 @@ Sub PeneVenoso(ByVal semen As String)
     Select Case Left$(sData, 3)
 
         Case ServerPackages.validarCliente
-            semen = Right$(semen, Len(semen) - 3)
-            RandomCode = semen
+            rData = Right$(rData, Len(rData) - 3)
+            RandomCode = rData
             UseNum = CByte(Right$(RandomCode, 1))
             UseAcum = RandomCode
             RandomCode = RandomCodeEncrypt(RandomCode)
             CargarCabezas
 
             If EstadoLogin = E_MODO.BorrarPj Then
-                Call VaginaJugosa(ClientPackages.borrarPersonaje & frmBorrar.txtNombre.Text & "," & frmBorrar.txtEmail.Text & "," & frmBorrar.txtPasswd.Text & "," & RandomCode)
+                Call SendData(ClientPackages.borrarPersonaje & frmBorrar.txtNombre.Text & "," & frmBorrar.txtEmail.Text & "," & frmBorrar.txtPasswd.Text & "," & RandomCode)
             ElseIf EstadoLogin = Normal Or EstadoLogin = CrearNuevoPj Then
                 Call login(RandomCode)
             ElseIf EstadoLogin = Dados Then
                 frmCrearPersonaje1.Show vbModal
             ElseIf EstadoLogin = E_MODO.RecuperarPass Then
-                Call VaginaJugosa(ClientPackages.recuperarPersonaje & frmRecuperar.txtNombre.Text & "," & frmRecuperar.txtEmail.Text & "," & RandomCode)
+                Call SendData(ClientPackages.recuperarPersonaje & frmRecuperar.txtNombre.Text & "," & frmRecuperar.txtEmail.Text & "," & RandomCode)
             End If
             Exit Sub
         Case "BKW"                  ' >>>>> Pausa :: BKW
@@ -1539,31 +1539,31 @@ Sub PeneVenoso(ByVal semen As String)
             End If
             Exit Sub
         Case "QDL"                  ' >>>>> Quitar Dialogo :: QDL
-            semen = Right$(semen, Len(semen) - 3)
-            Call Dialogos.QuitarDialogo(Val(semen))
+            rData = Right$(rData, Len(rData) - 3)
+            Call Dialogos.QuitarDialogo(Val(rData))
             Exit Sub
         Case "GUE" 'CHOTS | Crea Guerra
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim numeroSala As Byte
             Dim nombreSala As String
-            numeroSala = Val(ReadField(1, semen, 44))
-            nombreSala = ReadField(2, semen, 44)
+            numeroSala = Val(ReadField(1, rData, 44))
+            nombreSala = ReadField(2, rData, 44)
             frmGuerra.Show
             Call frmGuerra.setNumeroSala(numeroSala)
             frmGuerra.lblNombreSala.Caption = nombreSala
             
             Exit Sub
         Case "CXF"                  ' >>>>> Mostrar FX sobre Personaje :: "CFX"
-            semen = Right$(semen, Len(semen) - 3)
-            charindex = Val(ReadField(1, semen, 44))
-            charlist(charindex).fX = Val(ReadField(2, semen, 44))
-            charlist(charindex).FxLoopTimes = Val(ReadField(3, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            charindex = Val(ReadField(1, rData, 44))
+            charlist(charindex).fX = Val(ReadField(2, rData, 44))
+            charlist(charindex).FxLoopTimes = Val(ReadField(3, rData, 44))
             Exit Sub
         Case "AYM"                  ' >>>>> Pone Mensaje en Cola GM :: AYM
             Dim n1 As String, n2 As String
-            semen = Right$(semen, Len(semen) - 3)
-            n1 = ReadField(2, semen, 176)
-            n2 = ReadField(1, semen, 176)
+            rData = Right$(rData, Len(rData) - 3)
+            n1 = ReadField(2, rData, 176)
+            n2 = ReadField(1, rData, 176)
             frmMSG.CrearGMmSg n1, n2
             frmMSG.Show , frmMain
             Exit Sub
@@ -1571,48 +1571,48 @@ Sub PeneVenoso(ByVal semen As String)
             enParty = Not enParty
             Exit Sub
         Case "TAU" 'CHOTS | Crea Torneo AUTO
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Call AddtoRichTextBox(frmMain.RecTxt, "[TORNEO AUTOMÁTICO 1vs1]", 0, 74, 149, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "Nivel mínimo: 46", 0, 74, 149, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "Nivel máximo: 54", 0, 74, 149, True, False, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Cupo máximo: " & semen, 0, 74, 149, True, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Cupo máximo: " & rData, 0, 74, 149, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "Tipea /PARTICIPAR para inscribirte", 0, 74, 149, True, False, False)
             Exit Sub
         Case "DRR"
-            semen = Right$(semen, Len(semen) - 3)
-            Amarilla = Val(ReadField(1, semen, 44))
-            Verde = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            Amarilla = Val(ReadField(1, rData, 44))
+            Verde = Val(ReadField(2, rData, 44))
             frmMain.lblAgi.Caption = Amarilla
             frmMain.lblfuerza.Caption = Verde
             Exit Sub
         Case "CHV" 'CHOTS | Recibe Vestimentas
-            semen = Right$(semen, Len(semen) - 3)
-            ArmorMin = Val(ReadField(1, semen, 44))
-            ArmorMax = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            ArmorMin = Val(ReadField(1, rData, 44))
+            ArmorMax = Val(ReadField(2, rData, 44))
             frmMain.LblArmor.Caption = ArmorMin & "/" & ArmorMax
             Exit Sub
         Case "CHA" 'CHOTS | Recibe Armas
-            semen = Right$(semen, Len(semen) - 3)
-            ArmaMin = Val(ReadField(1, semen, 44))
-            ArmaMax = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            ArmaMin = Val(ReadField(1, rData, 44))
+            ArmaMax = Val(ReadField(2, rData, 44))
             frmMain.LblArma.Caption = ArmaMin & "/" & ArmaMax
             Exit Sub
         Case "CHE" 'CHOTS | Recibe Escu
-            semen = Right$(semen, Len(semen) - 3)
-            EscuMin = Val(ReadField(1, semen, 44))
-            EscuMax = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            EscuMin = Val(ReadField(1, rData, 44))
+            EscuMax = Val(ReadField(2, rData, 44))
             frmMain.LblEscudo.Caption = EscuMin & "/" & EscuMax
             Exit Sub
         Case "CHC" 'CHOTS | Recibe CASCO
-            semen = Right$(semen, Len(semen) - 3)
-            CascMin = Val(ReadField(1, semen, 44))
-            CascMax = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            CascMin = Val(ReadField(1, rData, 44))
+            CascMax = Val(ReadField(2, rData, 44))
             frmMain.LblCasc.Caption = CascMin & "/" & CascMax
             Exit Sub
         Case "CHD" 'CHOTS | Recibe Def Mag
-            semen = Right$(semen, Len(semen) - 3)
-            MagMin = Val(ReadField(1, semen, 44))
-            MagMax = Val(ReadField(2, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            MagMin = Val(ReadField(1, rData, 44))
+            MagMax = Val(ReadField(2, rData, 44))
             frmMain.lblmagica.Caption = MagMin & "/" & MagMax
             Exit Sub
         Case "ARX" 'CHOTS | Papio
@@ -1623,17 +1623,17 @@ Sub PeneVenoso(ByVal semen As String)
             frmMain.lblmagica.Caption = "0/0"
             Exit Sub
         Case "ARM"
-            semen = Right$(semen, Len(semen) - 3)
-            ArmaMin = Val(ReadField(1, semen, 44))
-            ArmaMax = Val(ReadField(2, semen, 44))
-            ArmorMin = Val(ReadField(3, semen, 44))
-            ArmorMax = Val(ReadField(4, semen, 44))
-            EscuMin = Val(ReadField(5, semen, 44))
-            EscuMax = Val(ReadField(6, semen, 44))
-            CascMin = Val(ReadField(7, semen, 44))
-            CascMax = Val(ReadField(8, semen, 44))
-            MagMin = Val(ReadField(9, semen, 44))
-            MagMax = Val(ReadField(10, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            ArmaMin = Val(ReadField(1, rData, 44))
+            ArmaMax = Val(ReadField(2, rData, 44))
+            ArmorMin = Val(ReadField(3, rData, 44))
+            ArmorMax = Val(ReadField(4, rData, 44))
+            EscuMin = Val(ReadField(5, rData, 44))
+            EscuMax = Val(ReadField(6, rData, 44))
+            CascMin = Val(ReadField(7, rData, 44))
+            CascMax = Val(ReadField(8, rData, 44))
+            MagMin = Val(ReadField(9, rData, 44))
+            MagMax = Val(ReadField(10, rData, 44))
             frmMain.LblArmor.Caption = ArmorMin & "/" & ArmorMax
             frmMain.LblArma.Caption = ArmaMin & "/" & ArmaMax
             frmMain.LblEscudo.Caption = EscuMin & "/" & EscuMax
@@ -1641,9 +1641,9 @@ Sub PeneVenoso(ByVal semen As String)
             frmMain.lblmagica.Caption = MagMin & "/" & MagMax
             Exit Sub
         Case "GEM"
-            semen = Right$(semen, Len(semen) - 3)
-            frmGema.habLbl.Caption = ReadField(1, semen, 44)
-            frmGema.crLbl.Caption = ReadField(2, semen, 44) & " - " & ReadField(3, semen, 44)
+            rData = Right$(rData, Len(rData) - 3)
+            frmGema.habLbl.Caption = ReadField(1, rData, 44)
+            frmGema.crLbl.Caption = ReadField(2, rData, 44) & " - " & ReadField(3, rData, 44)
             frmGema.Show
             Exit Sub
         Case "RUN" 'CHOTS | Abre el cambiador de Runas
@@ -1655,71 +1655,71 @@ Sub PeneVenoso(ByVal semen As String)
             frmTrade.lstObjetos.listIndex = 0
             Exit Sub
         Case "PST" 'CHOTS | Abre el cambiador de Puntos
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             frmPts.Show
-            frmPts.lblPts.Caption = Val(semen)
+            frmPts.lblPts.Caption = Val(rData)
             Exit Sub
         Case "UON" 'CHOTS | Users Online, Records, miembros del clan
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Usuarios Online: " & Val(ReadField(1, semen, 44)), 65, 190, 156, False, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Record de Usuarios: " & Val(ReadField(2, semen, 44)), 65, 190, 156, False, False)
-            If ReadField(3, semen, 44) <> "" Then
-                Call AddtoRichTextBox(frmMain.RecTxt, "Compañeros de tu clan conectados:" & ReadField(3, semen, 44), 228, 199, 27, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Usuarios Online: " & Val(ReadField(1, rData, 44)), 65, 190, 156, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Record de Usuarios: " & Val(ReadField(2, rData, 44)), 65, 190, 156, False, False)
+            If ReadField(3, rData, 44) <> "" Then
+                Call AddtoRichTextBox(frmMain.RecTxt, "Compañeros de tu clan conectados:" & ReadField(3, rData, 44), 228, 199, 27, False, False)
             End If
         Case "LEV" 'CHOTS | Sube de nivel
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Call Audio.PlayWave("6.wav")
             Call AddtoRichTextBox(frmMain.RecTxt, "Has subido de Nivel!", 65, 190, 156, False, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(1, semen, 64) & " skillpoints", 65, 190, 156, False, False)
-            SkillPoints = SkillPoints + Val(ReadField(1, semen, 64))
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(1, rData, 64) & " skillpoints", 65, 190, 156, False, False)
+            SkillPoints = SkillPoints + Val(ReadField(1, rData, 64))
             
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(2, semen, 64) & " puntos de Stamina", 65, 190, 156, False, False)
-            Call AddMaxSta(Val(ReadField(2, semen, 64)))
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(2, rData, 64) & " puntos de Stamina", 65, 190, 156, False, False)
+            Call AddMaxSta(Val(ReadField(2, rData, 64)))
             
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(3, semen, 64) & " puntos de Maná", 65, 190, 156, False, False)
-            Call AddMaxMana(Val(ReadField(3, semen, 64)))
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(3, rData, 64) & " puntos de Maná", 65, 190, 156, False, False)
+            Call AddMaxMana(Val(ReadField(3, rData, 64)))
             
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(4, semen, 64) & " puntos de Vida", 65, 190, 156, True, False)
-            Call AddMaxHp(Val(ReadField(4, semen, 64)))
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(4, rData, 64) & " puntos de Vida", 65, 190, 156, True, False)
+            Call AddMaxHp(Val(ReadField(4, rData, 64)))
             
-            Call SetElu(Val(ReadField(7, semen, 64)), False)
-            Call SetExp(Val(ReadField(6, semen, 64)), False)
+            Call SetElu(Val(ReadField(7, rData, 64)), False)
+            Call SetExp(Val(ReadField(6, rData, 64)), False)
             Call AddLevel(1)
 
-            Call AddtoRichTextBox(frmMain.RecTxt, "Tu golpe mínimo aumento en " & ReadField(5, semen, 64) & " puntos; tu golpe máximo aumento en " & ReadField(5, semen, 64) & " puntos", 65, 190, 156, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Tu golpe mínimo aumento en " & ReadField(5, rData, 64) & " puntos; tu golpe máximo aumento en " & ReadField(5, rData, 64) & " puntos", 65, 190, 156, False, False)
             Exit Sub
         Case "MAÑ" 'CHOTS | Mata un user
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has matado a " & ReadField(1, semen, 44) & "!", 255, 0, 0, True, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(2, semen, 44) & " puntos de experiencia", 255, 0, 0, True, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has matado a " & ReadField(1, rData, 44) & "!", 255, 0, 0, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & ReadField(2, rData, 44) & " puntos de experiencia", 255, 0, 0, True, False)
             Exit Sub
         Case "CNC" 'CHOTS | Conecta
-            semen = Right$(semen, Len(semen) - 3)
-            Call SetHp(Val(ReadField(2, semen, 64)), Val(ReadField(1, semen, 64)))
-            Call SetMana(Val(ReadField(4, semen, 64)), Val(ReadField(3, semen, 64)))
-            Call SetStamina(Val(ReadField(6, semen, 64)), Val(ReadField(5, semen, 64)))
+            rData = Right$(rData, Len(rData) - 3)
+            Call SetHp(Val(ReadField(2, rData, 64)), Val(ReadField(1, rData, 64)))
+            Call SetMana(Val(ReadField(4, rData, 64)), Val(ReadField(3, rData, 64)))
+            Call SetStamina(Val(ReadField(6, rData, 64)), Val(ReadField(5, rData, 64)))
 
-            ArmaMin = Val(ReadField(11, semen, 64))
-            ArmaMax = Val(ReadField(12, semen, 64))
-            ArmorMin = Val(ReadField(13, semen, 64))
-            ArmorMax = Val(ReadField(14, semen, 64))
-            EscuMin = Val(ReadField(15, semen, 64))
-            EscuMax = Val(ReadField(16, semen, 64))
-            CascMin = Val(ReadField(17, semen, 64))
-            CascMax = Val(ReadField(18, semen, 64))
-            MagMin = Val(ReadField(19, semen, 64))
-            MagMax = Val(ReadField(20, semen, 64))
+            ArmaMin = Val(ReadField(11, rData, 64))
+            ArmaMax = Val(ReadField(12, rData, 64))
+            ArmorMin = Val(ReadField(13, rData, 64))
+            ArmorMax = Val(ReadField(14, rData, 64))
+            EscuMin = Val(ReadField(15, rData, 64))
+            EscuMax = Val(ReadField(16, rData, 64))
+            CascMin = Val(ReadField(17, rData, 64))
+            CascMax = Val(ReadField(18, rData, 64))
+            MagMin = Val(ReadField(19, rData, 64))
+            MagMax = Val(ReadField(20, rData, 64))
 
-            Call SetSed(Val(ReadField(21, semen, 64)))
-            Call SetHambre(Val(ReadField(22, semen, 64)))
+            Call SetSed(Val(ReadField(21, rData, 64)))
+            Call SetHambre(Val(ReadField(22, rData, 64)))
 
-            Amarilla = Val(ReadField(23, semen, 64))
-            Verde = Val(ReadField(24, semen, 64))
+            Amarilla = Val(ReadField(23, rData, 64))
+            Verde = Val(ReadField(24, rData, 64))
 
-            Call SetElu(Val(ReadField(9, semen, 64)), False)
-            Call SetLevel(Val(ReadField(8, semen, 64)), False)
-            Call SetExp(Val(ReadField(10, semen, 64)), True)
-            Call SetGold(Val(ReadField(7, semen, 64)))
+            Call SetElu(Val(ReadField(9, rData, 64)), False)
+            Call SetLevel(Val(ReadField(8, rData, 64)), False)
+            Call SetExp(Val(ReadField(10, rData, 64)), True)
+            Call SetGold(Val(ReadField(7, rData, 64)))
             
             frmMain.LblArmor.Caption = ArmorMin & "/" & ArmorMax
             frmMain.LblArma.Caption = ArmaMin & "/" & ArmaMax
@@ -1730,73 +1730,73 @@ Sub PeneVenoso(ByVal semen As String)
             frmMain.lblAgi.Caption = Amarilla
             frmMain.lblfuerza.Caption = Verde
             
-            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Norte pertenece al clan " & ReadField(25, semen, 64) & ".", 230, 189, 43, True, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Oeste pertenece al clan " & ReadField(26, semen, 64) & ".", 230, 189, 43, True, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Este pertenece al clan " & ReadField(27, semen, 64) & ".", 230, 189, 43, True, False)
-            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Sur pertenece al clan " & ReadField(28, semen, 64) & ".", 230, 189, 43, True, False)
-            SkillPoints = Val(ReadField(29, semen, 64))
+            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Norte pertenece al clan " & ReadField(25, rData, 64) & ".", 230, 189, 43, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Oeste pertenece al clan " & ReadField(26, rData, 64) & ".", 230, 189, 43, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Este pertenece al clan " & ReadField(27, rData, 64) & ".", 230, 189, 43, True, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, "El Castillo Sur pertenece al clan " & ReadField(28, rData, 64) & ".", 230, 189, 43, True, False)
+            SkillPoints = Val(ReadField(29, rData, 64))
         
             Exit Sub
         Case "EXT"                  ' >>>>> Actualiza Estadisticas de Usuario :: "EST"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
 
-            Call SetHp(Val(ReadField(2, semen, 44)), Val(ReadField(1, semen, 44)))
-            Call SetMana(Val(ReadField(4, semen, 44)), Val(ReadField(3, semen, 44)))
-            Call SetStamina(Val(ReadField(6, semen, 44)), Val(ReadField(5, semen, 44)))
+            Call SetHp(Val(ReadField(2, rData, 44)), Val(ReadField(1, rData, 44)))
+            Call SetMana(Val(ReadField(4, rData, 44)), Val(ReadField(3, rData, 44)))
+            Call SetStamina(Val(ReadField(6, rData, 44)), Val(ReadField(5, rData, 44)))
 
-            Call SetElu(Val(ReadField(9, semen, 44)), False)
-            Call SetLevel(Val(ReadField(8, semen, 44)), False)
-            Call SetExp(Val(ReadField(10, semen, 44)), True)
-            Call SetGold(Val(ReadField(7, semen, 44)))
+            Call SetElu(Val(ReadField(9, rData, 44)), False)
+            Call SetLevel(Val(ReadField(8, rData, 44)), False)
+            Call SetExp(Val(ReadField(10, rData, 44)), True)
+            Call SetGold(Val(ReadField(7, rData, 44)))
         
             Exit Sub
         Case "MUE" '"Muere o Renace"
-            semen = Right$(semen, Len(semen) - 3)
-            SetHp (Val(ReadField(1, semen, 44)))
-            SetStamina (Val(ReadField(2, semen, 44)))
+            rData = Right$(rData, Len(rData) - 3)
+            SetHp (Val(ReadField(1, rData, 44)))
+            SetStamina (Val(ReadField(2, rData, 44)))
             Exit Sub
         
         Case "CHW" 'CHOTS | Has Ganado x puntos de experienca
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & semen & " puntos de experiencia!", 255, 0, 0, True, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & rData & " puntos de experiencia!", 255, 0, 0, True, False)
             Exit Sub
             
         Case "CHO" 'CHOTS | Has Ganado x monedas de oro
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & semen & " Monedas de Oro!", 255, 0, 0, True, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "Has ganado " & rData & " Monedas de Oro!", 255, 0, 0, True, False)
             Exit Sub
             
         Case "VHÑ" 'CHOTS | Espiar HP
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim EspiadoMaxHp As Integer
             Dim EspiadoMinHp As Integer
-            EspiadoMinHp = Val(ReadField(1, semen, 44))
-            EspiadoMaxHp = Val(ReadField(2, semen, 44))
+            EspiadoMinHp = Val(ReadField(1, rData, 44))
+            EspiadoMaxHp = Val(ReadField(2, rData, 44))
             
             frmEspia.hp.Width = (EspiadoMinHp / EspiadoMaxHp) * 4080
             frmEspia.lblHp.Caption = EspiadoMinHp & "/" & EspiadoMaxHp
             Exit Sub
 
         Case "VHP" '"VID"
-            semen = Right$(semen, Len(semen) - 3)
-            SetHp (Val(semen))
+            rData = Right$(rData, Len(rData) - 3)
+            SetHp (Val(rData))
             Exit Sub
             
         Case "FIX" 'CHOTS | Fixture
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Call frmFixture.Show
-            frmFixture.cargarLabels (semen)
+            frmFixture.cargarLabels (rData)
             Exit Sub
             
         Case ServerPackages.recibeDados
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             With frmCrearPersonaje1
                 If .Visible Then
-                    .lbFuerza.Caption = 10 + Val(mid$(semen, 1, 1))
-                    .lbAgilidad.Caption = 10 + Val(mid$(semen, 2, 1))
-                    .lbInteligencia.Caption = 10 + Val(mid$(semen, 3, 1))
-                    .lbCarisma.Caption = 10 + Val(mid$(semen, 4, 1))
-                    .lbConstitucion.Caption = 10 + Val(mid$(semen, 5, 1))
+                    .lbFuerza.Caption = 10 + Val(mid$(rData, 1, 1))
+                    .lbAgilidad.Caption = 10 + Val(mid$(rData, 2, 1))
+                    .lbInteligencia.Caption = 10 + Val(mid$(rData, 3, 1))
+                    .lbCarisma.Caption = 10 + Val(mid$(rData, 4, 1))
+                    .lbConstitucion.Caption = 10 + Val(mid$(rData, 5, 1))
                 End If
                 
                 Call .SetDadosFinal
@@ -1807,15 +1807,15 @@ Sub PeneVenoso(ByVal semen As String)
             Call AddMinHp(30)
             Exit Sub
         Case "NPÑ" 'CHOTS | Optimización de clicks a NPCs
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim npc As String
             Dim estado As String
             Dim estadoIndex As Byte
             Dim maestro As String
             Dim Aconsola As String
-            npc = ReadField(1, semen, 44)
-            estadoIndex = CByte(ReadField(2, semen, 44))
-            maestro = ReadField(3, semen, 44)
+            npc = ReadField(1, rData, 44)
+            estadoIndex = CByte(ReadField(2, rData, 44))
+            maestro = ReadField(3, rData, 44)
             
             Select Case estadoIndex
                 Case 0: estado = "Intacto"
@@ -1843,13 +1843,13 @@ Sub PeneVenoso(ByVal semen As String)
             
             
 Case "NPZ" 'CHOTS | Optimización de clicks a NPCs
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim minvida As String
             Dim Maxvida As String
-            npc = ReadField(1, semen, 44)
-            minvida = ReadField(2, semen, 44)
-            Maxvida = ReadField(3, semen, 44)
-            maestro = ReadField(4, semen, 44)
+            npc = ReadField(1, rData, 44)
+            minvida = ReadField(2, rData, 44)
+            Maxvida = ReadField(3, rData, 44)
+            maestro = ReadField(4, rData, 44)
             Aconsola = "(" & minvida & "/" & Maxvida & ") " & npc
             
             If Len(maestro) >= 1 Then
@@ -1863,7 +1863,7 @@ Case "NPZ" 'CHOTS | Optimización de clicks a NPCs
             
             
 Case "VES" 'CHOTS | Optimización de clicks a usuarios
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim Nick As String
             Dim Newb As Byte
             Dim Facc As Byte
@@ -1877,16 +1877,16 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             
             Aconsola = "Ves a "
             
-            Nick = ReadField(1, semen, 44)
-            Newb = Val(ReadField(2, semen, 44))
-            Facc = Val(ReadField(3, semen, 44))
-            Tit = Val(ReadField(4, semen, 44))
-            Clan = ReadField(5, semen, 44)
-            Casado = Val(ReadField(6, semen, 44))
-            Pareja = ReadField(7, semen, 44)
-            desc = ReadField(8, semen, 44)
-            Pert = Val(ReadField(9, semen, 44))
-            status = Val(ReadField(10, semen, 44))
+            Nick = ReadField(1, rData, 44)
+            Newb = Val(ReadField(2, rData, 44))
+            Facc = Val(ReadField(3, rData, 44))
+            Tit = Val(ReadField(4, rData, 44))
+            Clan = ReadField(5, rData, 44)
+            Casado = Val(ReadField(6, rData, 44))
+            Pareja = ReadField(7, rData, 44)
+            desc = ReadField(8, rData, 44)
+            Pert = Val(ReadField(9, rData, 44))
+            status = Val(ReadField(10, rData, 44))
             
             Aconsola = Aconsola & Nick & " "
             Aconsola = Aconsola & IIf(Newb = 1, "<NEWBIE> ", "")
@@ -1944,8 +1944,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                 
 
     Case "STT" '"STA"
-            semen = Right$(semen, Len(semen) - 3)
-            SetStamina (Val(semen))
+            rData = Right$(rData, Len(rData) - 3)
+            SetStamina (Val(rData))
             Exit Sub
     
     Case "PRE" 'CHOTS | Recibe mensaje de castillos
@@ -1954,69 +1954,69 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Dim CClan As String
             Dim puntoss As String
             Dim Casti As String
-            semen = Right$(semen, Len(semen) - 3)
-            Texto = Int(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 3)
+            Texto = Int(ReadField(1, rData, 44))
             If Texto >= 75 Then
                 Call txtReceivedB(Texto)
             ElseIf Texto < 17 Then
-                CClan = (ReadField(2, semen, 44))
+                CClan = (ReadField(2, rData, 44))
                 Call txtReceived(Texto, CClan)
             ElseIf Texto < 20 Or Texto = 25 Then
                 Call txtReceived(Texto)
             ElseIf Texto = 26 Then
-                Casti = (ReadField(2, semen, 44))
+                Casti = (ReadField(2, rData, 44))
                 Call txtReceived(Texto, Casti)
             ElseIf Texto = 27 Then
-                Casti = ReadField(2, semen, 44)
-                puntoss = ReadField(3, semen, 44)
+                Casti = ReadField(2, rData, 44)
+                puntoss = ReadField(3, rData, 44)
                 Call txtReceived(Texto, Casti, puntoss)
             Else
-                CClan = ReadField(2, semen, 44)
-                Casti = ReadField(3, semen, 44)
+                CClan = ReadField(2, rData, 44)
+                Casti = ReadField(3, rData, 44)
                 Call txtReceived(Texto, CClan, Casti)
             End If
             Exit Sub
     
     Case "OLD" '"ORO"
-            semen = Right$(semen, Len(semen) - 3)
-            AddGold (Val(semen))
+            rData = Right$(rData, Len(rData) - 3)
+            AddGold (Val(rData))
             Exit Sub
             
     Case "SKI" 'CHOTS | Sube Skill
             Dim Skill As String
             Dim Cant As Byte
-            semen = Right$(semen, Len(semen) - 3)
-            Skill = Val(ReadField(1, semen, 44))
-            Cant = CByte(Val(ReadField(2, semen, 44)))
+            rData = Right$(rData, Len(rData) - 3)
+            Skill = Val(ReadField(1, rData, 44))
+            Cant = CByte(Val(ReadField(2, rData, 44)))
             Call AddtoRichTextBox(frmMain.RecTxt, "¡Has mejorado tu skill " & SkillsNames(Skill) & " en un punto!. Ahora tienes " & Cant & " pts.", 65, 190, 156, False, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, Mensaje25, 255, 0, 0, True, False, False)
             Exit Sub
     
     Case "MIN" 'CHOTS | Extrae Minerales
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has extraído algunos minerales! " & "(" & semen & ")", 65, 190, 156, False, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has extraído algunos minerales! " & "(" & rData & ")", 65, 190, 156, False, False, False)
             Exit Sub
             
             
     Case "RMN" 'CHOTS | Recupera Maná
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has recuperado " & semen & " puntos de mana!", 65, 190, 156, False, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has recuperado " & rData & " puntos de mana!", 65, 190, 156, False, False, False)
             Exit Sub
             
             
     Case "LEÑ" 'CHOTS | Extrae Leña
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has conseguido algo de leña! " & "(" & semen & ")", 65, 190, 156, False, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has conseguido algo de leña! " & "(" & rData & ")", 65, 190, 156, False, False, False)
             Exit Sub
             
     Case "CON" 'CHOTS | Conecta clan
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, semen & " Conectó", 255, 255, 255, True, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, rData & " Conectó", 255, 255, 255, True, False, False)
             Exit Sub
             
     Case "VOT" 'CHOTS | Hay Elecciones
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, semen & " Conectó", 255, 255, 255, True, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, rData & " Conectó", 255, 255, 255, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "Hoy es la votacion para elegir un nuevo líder para el clan!!.", 255, 255, 255, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "La eleccion durara 24 horas, se puede votar a cualquier miembro del clan.", 255, 255, 255, True, False, False)
             Call AddtoRichTextBox(frmMain.RecTxt, "Para votar escribe /VOTO NICKNAME.", 255, 255, 255, True, False, False)
@@ -2024,23 +2024,23 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Exit Sub
             
     Case "DES" 'CHOTS | Desconecta clan
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, semen & " Desconectó", 255, 255, 255, True, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, rData & " Desconectó", 255, 255, 255, True, False, False)
             Exit Sub
             
     Case "CHL" 'CHOTS | Extrae Chalas
-            semen = Right$(semen, Len(semen) - 3)
-            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has conseguido algunas raíces! " & "(" & semen & ")", 65, 190, 156, False, False, False)
+            rData = Right$(rData, Len(rData) - 3)
+            Call AddtoRichTextBox(frmMain.RecTxt, "¡Has conseguido algunas raíces! " & "(" & rData & ")", 65, 190, 156, False, False, False)
             Exit Sub
             
     Case "ESP" '"EXP"
-            semen = Right$(semen, Len(semen) - 3)
-            Call SetExp(Val(semen))
+            rData = Right$(rData, Len(rData) - 3)
+            Call SetExp(Val(rData))
             Exit Sub
     
         Case "T01"                  ' >>>>> TRABAJANDO :: TRA
-            semen = Right$(semen, Len(semen) - 3)
-            UsingSkill = Val(semen)
+            rData = Right$(rData, Len(rData) - 3)
+            UsingSkill = Val(rData)
             frmMain.MousePointer = 2
             Select Case UsingSkill
                 Case Magia
@@ -2078,13 +2078,13 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             
             Exit Sub
         Case "CSI"                 ' >>>>> Actualiza Slot Inventario :: CSI
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             Dim CHOTS As Integer
-            CHOTS = ReadField(2, semen, 44)
-            slot = ReadField(1, semen, 44)
+            CHOTS = ReadField(2, rData, 44)
+            slot = ReadField(1, rData, 44)
             If CHOTS <> 0 Then
-                Call Inventario.SetItem(slot, ReadField(2, semen, 44), ReadField(4, semen, 44), ReadField(5, semen, 44), Val(ReadField(6, semen, 44)), Val(ReadField(7, semen, 44)), _
-                                    Val(ReadField(8, semen, 44)), Val(ReadField(9, semen, 44)), Val(ReadField(10, semen, 44)), Val(ReadField(11, semen, 44)), ReadField(3, semen, 44))
+                Call Inventario.SetItem(slot, ReadField(2, rData, 44), ReadField(4, rData, 44), ReadField(5, rData, 44), Val(ReadField(6, rData, 44)), Val(ReadField(7, rData, 44)), _
+                                    Val(ReadField(8, rData, 44)), Val(ReadField(9, rData, 44)), Val(ReadField(10, rData, 44)), Val(ReadField(11, rData, 44)), ReadField(3, rData, 44))
             Else
                 Call Inventario.SetItem(slot, 0, 0, 0, 0, 0, 0, 0, 0, 0, "(none)")
             End If
@@ -2092,7 +2092,7 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         '[KEVIN]-------------------------------------------------------
         '**********************************************************************
         Case "SBÑ"                 ' CHOTS | Inicializa inventario del banco
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             For i = 1 To MAX_BANCOINVENTORY_SLOTS
                 UserBancoInventory(i).OBJIndex = 0
                 UserBancoInventory(slot).Name = "(none)"
@@ -2106,11 +2106,11 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             
             Exit Sub
         Case "SBO"                 ' >>>>> Actualiza Inventario Banco :: SBO
-            semen = Right$(semen, Len(semen) - 3)
-            slot = ReadField(1, semen, 44)
-            UserBancoInventory(slot).OBJIndex = ReadField(2, semen, 44)
+            rData = Right$(rData, Len(rData) - 3)
+            slot = ReadField(1, rData, 44)
+            UserBancoInventory(slot).OBJIndex = ReadField(2, rData, 44)
             
-            If Val(ReadField(2, semen, 44)) = 0 Then
+            If Val(ReadField(2, rData, 44)) = 0 Then
                UserBancoInventory(slot).Name = "(none)"
                UserBancoInventory(slot).Amount = 0
                UserBancoInventory(slot).GrhIndex = 0
@@ -2119,13 +2119,13 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                UserBancoInventory(slot).MinHit = 0
                UserBancoInventory(slot).Def = 0
             Else
-                UserBancoInventory(slot).Name = ReadField(3, semen, 44)
-                UserBancoInventory(slot).Amount = ReadField(4, semen, 44)
-                UserBancoInventory(slot).GrhIndex = Val(ReadField(5, semen, 44))
-                UserBancoInventory(slot).OBJType = Val(ReadField(6, semen, 44))
-                UserBancoInventory(slot).MaxHit = Val(ReadField(7, semen, 44))
-                UserBancoInventory(slot).MinHit = Val(ReadField(8, semen, 44))
-                UserBancoInventory(slot).Def = Val(ReadField(9, semen, 44))
+                UserBancoInventory(slot).Name = ReadField(3, rData, 44)
+                UserBancoInventory(slot).Amount = ReadField(4, rData, 44)
+                UserBancoInventory(slot).GrhIndex = Val(ReadField(5, rData, 44))
+                UserBancoInventory(slot).OBJType = Val(ReadField(6, rData, 44))
+                UserBancoInventory(slot).MaxHit = Val(ReadField(7, rData, 44))
+                UserBancoInventory(slot).MinHit = Val(ReadField(8, rData, 44))
+                UserBancoInventory(slot).Def = Val(ReadField(9, rData, 44))
             End If
             
             tempstr = ""
@@ -2140,9 +2140,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         '************************************************************************
         '[/KEVIN]-------
         Case "SHS"                ' >>>>> Agrega hechizos a Lista Spells :: SHS
-            semen = Right$(semen, Len(semen) - 3)
-            slot = ReadField(1, semen, 44)
-            If UCase$(ReadField(2, semen, 44)) = "N" Then
+            rData = Right$(rData, Len(rData) - 3)
+            slot = ReadField(1, rData, 44)
+            If UCase$(ReadField(2, rData, 44)) = "N" Then
                 UserHechizos(slot) = 0
                 If slot > frmMain.hlst.ListCount Then
                     frmMain.hlst.AddItem "(None)"
@@ -2150,16 +2150,16 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                     frmMain.hlst.List(slot - 1) = "(None)"
                 End If
             Else
-                UserHechizos(slot) = ReadField(2, semen, 44)
+                UserHechizos(slot) = ReadField(2, rData, 44)
                 If slot > frmMain.hlst.ListCount Then
-                    frmMain.hlst.AddItem ReadField(3, semen, 44)
+                    frmMain.hlst.AddItem ReadField(3, rData, 44)
                 Else
-                    frmMain.hlst.List(slot - 1) = ReadField(3, semen, 44)
+                    frmMain.hlst.List(slot - 1) = ReadField(3, rData, 44)
                 End If
             End If
             Exit Sub
         Case "LAH"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             
             For m = 0 To UBound(ArmasHerrero)
                 ArmasHerrero(m) = 0
@@ -2167,15 +2167,15 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             i = 1
             m = 0
             Do
-                cad$ = ReadField(i, semen, 44)
-                ArmasHerrero(m) = Val(ReadField(i + 1, semen, 44))
+                cad$ = ReadField(i, rData, 44)
+                ArmasHerrero(m) = Val(ReadField(i + 1, rData, 44))
                 If cad$ <> "" Then frmHerrero.lstArmas.AddItem cad$
                 i = i + 2
                 m = m + 1
             Loop While cad$ <> ""
             Exit Sub
          Case "LAR"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             
             For m = 0 To UBound(ArmadurasHerrero)
                 ArmadurasHerrero(m) = 0
@@ -2183,8 +2183,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             i = 1
             m = 0
             Do
-                cad$ = ReadField(i, semen, 44)
-                ArmadurasHerrero(m) = Val(ReadField(i + 1, semen, 44))
+                cad$ = ReadField(i, rData, 44)
+                ArmadurasHerrero(m) = Val(ReadField(i + 1, rData, 44))
                 If cad$ <> "" Then frmHerrero.lstArmaduras.AddItem cad$
                 i = i + 2
                 m = m + 1
@@ -2192,7 +2192,7 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Exit Sub
             
          Case "LGL"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             
             For m = 0 To UBound(ObjDruida)
                 ObjDruida(m) = 0
@@ -2200,8 +2200,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             i = 1
             m = 0
             Do
-                cad$ = ReadField(i, semen, 44)
-                ObjDruida(m) = Val(ReadField(i + 1, semen, 44))
+                cad$ = ReadField(i, rData, 44)
+                ObjDruida(m) = Val(ReadField(i + 1, rData, 44))
                 If cad$ <> "" Then frmAlquimia.lstPociones.AddItem cad$
                 i = i + 2
                 m = m + 1
@@ -2209,7 +2209,7 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Exit Sub
             
          Case "OBR"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             
             For m = 0 To UBound(ObjCarpintero)
                 ObjCarpintero(m) = 0
@@ -2217,8 +2217,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             i = 1
             m = 0
             Do
-                cad$ = ReadField(i, semen, 44)
-                ObjCarpintero(m) = Val(ReadField(i + 1, semen, 44))
+                cad$ = ReadField(i, rData, 44)
+                ObjCarpintero(m) = Val(ReadField(i + 1, rData, 44))
                 If cad$ <> "" Then frmCarp.lstArmas.AddItem cad$
                 i = i + 2
                 m = m + 1
@@ -2226,7 +2226,7 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Exit Sub
             
         Case "OBS" 'sastre
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             
             For m = 0 To UBound(ObjSastre)
                 ObjSastre(m) = 0
@@ -2234,8 +2234,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             i = 1
             m = 0
             Do
-                cad$ = ReadField(i, semen, 44)
-                ObjSastre(m) = Val(ReadField(i + 1, semen, 44))
+                cad$ = ReadField(i, rData, 44)
+                ObjSastre(m) = Val(ReadField(i + 1, rData, 44))
                 If cad$ <> "" Then frmSastre.lstRopas.AddItem cad$
                 i = i + 2
                 m = m + 1
@@ -2246,20 +2246,20 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             UserParalizado = Not UserParalizado
             Exit Sub
         Case "SPL"
-            semen = Right(semen, Len(semen) - 3)
-            For i = 1 To Val(ReadField(1, semen, 44))
-                frmSpawnList.lstCriaturas.AddItem ReadField(i + 1, semen, 44)
+            rData = Right(rData, Len(rData) - 3)
+            For i = 1 To Val(ReadField(1, rData, 44))
+                frmSpawnList.lstCriaturas.AddItem ReadField(i + 1, rData, 44)
             Next i
             frmSpawnList.Show , frmMain
             Exit Sub
         Case "FPZ"
-               Call VaginaJugosa("FPS" & FramesPerSec)
+               Call SendData("FPS" & FramesPerSec)
                Exit Sub
         Case "FPP"
-               Call VaginaJugosa("FPI" & tAt & "," & tUs & "," & tComb & "," & tClick)
+               Call SendData("FPI" & tAt & "," & tUs & "," & tComb & "," & tClick)
                Exit Sub
         Case "ERR"
-            semen = Right$(semen, Len(semen) - 3)
+            rData = Right$(rData, Len(rData) - 3)
             frmConnect.MousePointer = 1
             frmCrearPersonaje1.MousePointer = 1
             If Not frmCrearPersonaje1.Visible Then
@@ -2271,10 +2271,10 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
 #End If
             End If
             'If Not frmCrearPersonaje3.Visible = True Then
-            'frmConnect.Label1.Caption = semen
+            'frmConnect.Label1.Caption = rData
             'frmConnect.Timer1.Enabled = True
             'Else
-            MsgBox (semen)
+            MsgBox (rData)
             'End If
             frmConnect.MousePointer = 1
             Exit Sub
@@ -2283,17 +2283,17 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
     
     Select Case Left$(sData, 4)
         Case "SEGS" ' CHOTS | Manda todos los seguros cuando conectas
-            semen = Right$(semen, Len(semen) - 4)
+            rData = Right$(rData, Len(rData) - 4)
             '1=seguro
             '2=clan
             
-            If Val(ReadField(1, semen, 44)) = 1 Then
+            If Val(ReadField(1, rData, 44)) = 1 Then
                 activarSeguro
             Else
                 desactivarSeguro
             End If
             
-            If Val(ReadField(2, semen, 44)) = 1 Then
+            If Val(ReadField(2, rData, 44)) = 1 Then
                 activarSeguroClan
             Else
                 desactivarSeguroClan
@@ -2305,16 +2305,16 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Exit Sub
         Case "MATA" ' CHOTS | Matar Procesos
             Dim Procesoo As String
-            semen = Right$(semen, Len(semen) - 4)
-            Procesoo = ReadField(1, semen, 44)
+            rData = Right$(rData, Len(rData) - 4)
+            Procesoo = ReadField(1, rData, 44)
             Call KillProcess(Procesoo)
             Exit Sub
         Case "PCGN" ' CHOTS | Poner Procesos en frm
             Dim Proceso As String
             Dim Nombre As String
-            semen = Right$(semen, Len(semen) - 4)
-            Proceso = ReadField(1, semen, 44)
-            Nombre = ReadField(2, semen, 44)
+            rData = Right$(rData, Len(rData) - 4)
+            Proceso = ReadField(1, rData, 44)
+            Nombre = ReadField(2, rData, 44)
             Call FrmProcesos.Show
             FrmProcesos.List1.AddItem Proceso
             FrmProcesos.Caption = "Procesos de " & Nombre
@@ -2326,12 +2326,12 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Dim Peso As String
             Dim verssion As String
             
-            semen = Right$(semen, Len(semen) - 4)
-            Proseso = ReadField(1, semen, 44)
+            rData = Right$(rData, Len(rData) - 4)
+            Proseso = ReadField(1, rData, 44)
             Peso = ReadField(2, Proseso, 64)
             verssion = ReadField(3, Proseso, 64)
             Proseso = ReadField(1, Proseso, 64)
-            Nonbre = ReadField(2, semen, 44)
+            Nonbre = ReadField(2, rData, 44)
             Call frmProsesos.Show
             
             With frmProsesos.FlxGd
@@ -2360,9 +2360,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         Case "PCCC" ' CHOTS | Poner Captions en frm
             Dim Caption As String
             Dim Nomvre As String
-            semen = Right$(semen, Len(semen) - 4)
-            Caption = ReadField(1, semen, 44)
-            Nomvre = ReadField(2, semen, 44)
+            rData = Right$(rData, Len(rData) - 4)
+            Caption = ReadField(1, rData, 44)
+            Nomvre = ReadField(2, rData, 44)
             Call frmCaptions.Show
             frmCaptions.List1.AddItem Caption
             frmCaptions.Caption = "Captions de " & Nomvre
@@ -2370,31 +2370,31 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         Case "PCCP" ' CHOTS | Ver Captions
             frmCaptions.List1.Clear
             frmCaptions.Caption = ""
-            semen = Right$(semen, Len(semen) - 4)
-            charindex = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 4)
+            charindex = Val(ReadField(1, rData, 44))
             Call frmCaptions.Listar(charindex)
             Exit Sub
         Case "PCGR" ' CHOTS | Ver procesos
             FrmProcesos.List1.Clear
             FrmProcesos.Caption = ""
-            semen = Right$(semen, Len(semen) - 4)
-            charindex = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 4)
+            charindex = Val(ReadField(1, rData, 44))
             Call enumProc(charindex)
             Exit Sub
         Case "PCSC" ' CHOTS | Ver prosesos
             frmProsesos.FlxGd.Clear
             frmProsesos.Caption = ""
-            semen = Right$(semen, Len(semen) - 4)
-            charindex = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 4)
+            charindex = Val(ReadField(1, rData, 44))
             Call PROC(charindex)
             Exit Sub
         Case "PCFT" ' CHOTS | Ver Foto
-            semen = Right$(semen, Len(semen) - 4)
-            charindex = Val(ReadField(1, semen, 44))
+            rData = Right$(rData, Len(rData) - 4)
+            charindex = Val(ReadField(1, rData, 44))
             Call frmScreenshots.TakeAndUploadScreenshot(charindex)
             Exit Sub
         Case "PART"
-            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_ENTRAR_PARTY_1 & ReadField(1, semen, 44) & MENSAJE_ENTRAR_PARTY_2, 0, 255, 0, False, False, False)
+            Call AddtoRichTextBox(frmMain.RecTxt, MENSAJE_ENTRAR_PARTY_1 & ReadField(1, rData, 44) & MENSAJE_ENTRAR_PARTY_2, 0, 255, 0, False, False, False)
             Exit Sub
         Case "CEGU"
             UserCiego = True
@@ -2405,12 +2405,12 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             UserEstupido = True
             Exit Sub
         Case "NATR" ' >>>>> Recibe atributos para el nuevo personaje
-            semen = Right$(semen, Len(semen) - 4)
-            UserAtributos(1) = ReadField(1, semen, 44)
-            UserAtributos(2) = ReadField(2, semen, 44)
-            UserAtributos(3) = ReadField(3, semen, 44)
-            UserAtributos(4) = ReadField(4, semen, 44)
-            UserAtributos(5) = ReadField(5, semen, 44)
+            rData = Right$(rData, Len(rData) - 4)
+            UserAtributos(1) = ReadField(1, rData, 44)
+            UserAtributos(2) = ReadField(2, rData, 44)
+            UserAtributos(3) = ReadField(3, rData, 44)
+            UserAtributos(4) = ReadField(4, rData, 44)
+            UserAtributos(5) = ReadField(5, rData, 44)
             
             frmCrearPersonaje1.lbFuerza.Caption = UserAtributos(1)
             frmCrearPersonaje1.lbInteligencia.Caption = UserAtributos(2)
@@ -2420,11 +2420,11 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             
             Exit Sub
         Case "MCAR"              ' >>>>> Mostrar Cartel :: MCAR
-            semen = Right$(semen, Len(semen) - 4)
-            Call InitCartel(ReadField(1, semen, 176), CInt(ReadField(2, semen, 176)))
+            rData = Right$(rData, Len(rData) - 4)
+            Call InitCartel(ReadField(1, rData, 176), CInt(ReadField(2, rData, 176)))
             Exit Sub
         Case "NPCÑ"              ' CHOTS | Inicializa Inventario del NPC
-            semen = Right(semen, Len(semen) - 4)
+            rData = Right(rData, Len(rData) - 4)
             For i = 1 To MAX_INVENTORY_SLOTS
                 NPCInventory(i).Name = "Nada"
                 NPCInventory(i).Amount = 0
@@ -2445,9 +2445,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             Next i
             Exit Sub
         Case "NPCI"              ' >>>>> Recibe Item del Inventario de un NPC :: NPCI
-            semen = Right(semen, Len(semen) - 4)
+            rData = Right(rData, Len(rData) - 4)
             NPCInvDim = NPCInvDim + 1
-            NPCInventory(NPCInvDim).Name = ReadField(1, semen, 44)
+            NPCInventory(NPCInvDim).Name = ReadField(1, rData, 44)
             If UCase$(NPCInventory(NPCInvDim).Name) = "N" Then
                 NPCInventory(NPCInvDim).Amount = 0
                 NPCInventory(NPCInvDim).Valor = 0
@@ -2467,61 +2467,61 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                 frmComerciar.List1(0).AddItem "Nada"
                 Exit Sub
             End If
-            NPCInventory(NPCInvDim).Amount = ReadField(2, semen, 44)
-            NPCInventory(NPCInvDim).Valor = ReadField(3, semen, 44)
-            NPCInventory(NPCInvDim).GrhIndex = ReadField(4, semen, 44)
-            NPCInventory(NPCInvDim).OBJIndex = ReadField(5, semen, 44)
-            NPCInventory(NPCInvDim).OBJType = ReadField(6, semen, 44)
-            NPCInventory(NPCInvDim).MaxHit = ReadField(7, semen, 44)
-            NPCInventory(NPCInvDim).MinHit = ReadField(8, semen, 44)
-            NPCInventory(NPCInvDim).Def = ReadField(9, semen, 44)
-            NPCInventory(NPCInvDim).C1 = ReadField(10, semen, 44)
-            NPCInventory(NPCInvDim).C2 = ReadField(11, semen, 44)
-            NPCInventory(NPCInvDim).C3 = ReadField(12, semen, 44)
-            NPCInventory(NPCInvDim).C4 = ReadField(13, semen, 44)
-            NPCInventory(NPCInvDim).C5 = ReadField(14, semen, 44)
-            NPCInventory(NPCInvDim).C6 = ReadField(15, semen, 44)
-            NPCInventory(NPCInvDim).C7 = ReadField(16, semen, 44)
+            NPCInventory(NPCInvDim).Amount = ReadField(2, rData, 44)
+            NPCInventory(NPCInvDim).Valor = ReadField(3, rData, 44)
+            NPCInventory(NPCInvDim).GrhIndex = ReadField(4, rData, 44)
+            NPCInventory(NPCInvDim).OBJIndex = ReadField(5, rData, 44)
+            NPCInventory(NPCInvDim).OBJType = ReadField(6, rData, 44)
+            NPCInventory(NPCInvDim).MaxHit = ReadField(7, rData, 44)
+            NPCInventory(NPCInvDim).MinHit = ReadField(8, rData, 44)
+            NPCInventory(NPCInvDim).Def = ReadField(9, rData, 44)
+            NPCInventory(NPCInvDim).C1 = ReadField(10, rData, 44)
+            NPCInventory(NPCInvDim).C2 = ReadField(11, rData, 44)
+            NPCInventory(NPCInvDim).C3 = ReadField(12, rData, 44)
+            NPCInventory(NPCInvDim).C4 = ReadField(13, rData, 44)
+            NPCInventory(NPCInvDim).C5 = ReadField(14, rData, 44)
+            NPCInventory(NPCInvDim).C6 = ReadField(15, rData, 44)
+            NPCInventory(NPCInvDim).C7 = ReadField(16, rData, 44)
             frmComerciar.List1(0).AddItem NPCInventory(NPCInvDim).Name
             Exit Sub
         Case "EHYS"              ' Actualiza Hambre y Sed :: EHYS
-            semen = Right$(semen, Len(semen) - 4)
-            SetSed (Val(ReadField(1, semen, 44)))
-            SetHambre (Val(ReadField(2, semen, 44)))
+            rData = Right$(rData, Len(rData) - 4)
+            SetSed (Val(ReadField(1, rData, 44)))
+            SetHambre (Val(ReadField(2, rData, 44)))
             Exit Sub
         Case "XEST" 'CHOTS | Full estadisticas
-            semen = Right$(semen, Len(semen) - 4)
+            rData = Right$(rData, Len(rData) - 4)
 
             ' CHOTS | Leo todas las stats y dps abro el frmEstadisticas
             ' Atrib, Fama, Skills, Stats
 
             'ATR, son siempre 5
             For i = 1 To NUMATRIBUTOS
-                UserAtributos(i) = Val(ReadField(i, semen, 44))
+                UserAtributos(i) = Val(ReadField(i, rData, 44))
             Next i
 
             'FAMA
-            UserReputacion.AsesinoRep = Val(ReadField(6, semen, 44))
-            UserReputacion.BandidoRep = Val(ReadField(7, semen, 44))
-            UserReputacion.BurguesRep = Val(ReadField(8, semen, 44))
-            UserReputacion.LadronesRep = Val(ReadField(9, semen, 44))
-            UserReputacion.NobleRep = Val(ReadField(10, semen, 44))
-            UserReputacion.PlebeRep = Val(ReadField(11, semen, 44))
-            UserReputacion.Promedio = Val(ReadField(12, semen, 44))
+            UserReputacion.AsesinoRep = Val(ReadField(6, rData, 44))
+            UserReputacion.BandidoRep = Val(ReadField(7, rData, 44))
+            UserReputacion.BurguesRep = Val(ReadField(8, rData, 44))
+            UserReputacion.LadronesRep = Val(ReadField(9, rData, 44))
+            UserReputacion.NobleRep = Val(ReadField(10, rData, 44))
+            UserReputacion.PlebeRep = Val(ReadField(11, rData, 44))
+            UserReputacion.Promedio = Val(ReadField(12, rData, 44))
 
             'ESKILS, son 24
             For i = 1 To NUMSKILLS
-                UserSkills(i) = Val(ReadField(12 + i, semen, 44))
+                UserSkills(i) = Val(ReadField(12 + i, rData, 44))
             Next i
 
             'MEST
             With UserEstadisticas
-                .CiudadanosMatados = Val(ReadField(37, semen, 44))
-                .CriminalesMatados = Val(ReadField(38, semen, 44))
-                .UsuariosMatados = Val(ReadField(39, semen, 44))
-                .NpcsMatados = Val(ReadField(40, semen, 44))
-                .Clase = ReadField(41, semen, 44)
-                .PenaCarcel = Val(ReadField(42, semen, 44))
+                .CiudadanosMatados = Val(ReadField(37, rData, 44))
+                .CriminalesMatados = Val(ReadField(38, rData, 44))
+                .UsuariosMatados = Val(ReadField(39, rData, 44))
+                .NpcsMatados = Val(ReadField(40, rData, 44))
+                .Clase = ReadField(41, rData, 44)
+                .PenaCarcel = Val(ReadField(42, rData, 44))
             End With
 
             frmEstadisticas2.Iniciar_Labels
@@ -2530,24 +2530,24 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             frmEstadisticas2.puntos.Caption = SkillPoints
             Exit Sub
         Case "SUNI"             ' >>>>> Subir Nivel :: SUNI
-            semen = Right$(semen, Len(semen) - 4)
-            SkillPoints = SkillPoints + Val(semen)
+            rData = Right$(rData, Len(rData) - 4)
+            SkillPoints = SkillPoints + Val(rData)
             Exit Sub
         Case "NENE"             ' >>>>> Nro de Personajes :: NENE
-            semen = Right$(semen, Len(semen) - 4)
-            AddtoRichTextBox frmMain.RecTxt, MENSAJE_NENE & semen, 255, 255, 255, 0, 0
+            rData = Right$(rData, Len(rData) - 4)
+            AddtoRichTextBox frmMain.RecTxt, MENSAJE_NENE & rData, 255, 255, 255, 0, 0
             Exit Sub
         Case "RSOS"             ' >>>>> Mensaje :: RSOS
-            semen = Right$(semen, Len(semen) - 4)
-            frmMSG.List1.AddItem semen
+            rData = Right$(rData, Len(rData) - 4)
+            frmMSG.List1.AddItem rData
             Exit Sub
         Case "MSOS"             ' >>>>> Mensaje :: MSOS
             frmMSG.Show , frmMain
             Exit Sub
         Case "FMSG"             ' >>>>> Foros :: FMSG
-            semen = Right$(semen, Len(semen) - 4)
-            frmForo.List.AddItem ReadField(1, semen, 176)
-            frmForo.Text(frmForo.List.ListCount - 1).Text = ReadField(2, semen, 176)
+            rData = Right$(rData, Len(rData) - 4)
+            frmForo.List.AddItem ReadField(1, rData, 176)
+            frmForo.Text(frmForo.List.ListCount - 1).Text = ReadField(2, rData, 176)
             Load frmForo.Text(frmForo.List.ListCount)
             Exit Sub
         Case "MFOR"             ' >>>>> Foros :: MFOR
@@ -2565,7 +2565,7 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             
             
 #If SeguridadAlkon Then
-            If (10 * Val(ReadField(2, semen, 44)) = 10) Then
+            If (10 * Val(ReadField(2, rData, 44)) = 10) Then
                 Call MI(CualMI).SetInvisible(charindex)
             Else
                 Call MI(CualMI).ResetInvisible(charindex)
@@ -2584,14 +2584,14 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             UserEstupido = False
             Exit Sub
         Case "RECUPS" 'CHOTS | Recuperar Personaje
-            semen = Right$(semen, Len(semen) - 6)
-            Call MsgBox("Su Nueva Password es:" & vbNewLine & semen)
+            rData = Right$(rData, Len(rData) - 6)
+            Call MsgBox("Su Nueva Password es:" & vbNewLine & rData)
             Unload frmRecuperar
             Exit Sub
         Case "RECUBP" 'CHOTS | Borrar Personaje
-            semen = Right$(semen, Len(semen) - 6)
+            rData = Right$(rData, Len(rData) - 6)
             With frmBorrar
-                .lblPreg.Caption = "¿" & " " & semen & " " & "?"
+                .lblPreg.Caption = "¿" & " " & rData & " " & "?"
                 .lblPreg.Visible = True
                 .txtResp.Visible = True
                 .Label6.Visible = True
@@ -2604,9 +2604,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             End With
             Exit Sub
         Case "RECUPR" 'CHOTS | Recuperar Personaje
-            semen = Right$(semen, Len(semen) - 6)
+            rData = Right$(rData, Len(rData) - 6)
             With frmRecuperar
-                .lblPreg.Caption = "¿" & " " & semen & " " & "?"
+                .lblPreg.Caption = "¿" & " " & rData & " " & "?"
                 .lblPreg.Visible = True
                 .txtResp.Visible = True
                 .Label5.Visible = True
@@ -2619,13 +2619,13 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             End With
             Exit Sub
         Case "LSTQUE" 'CHOTS | Sistema de Quest
-            semen = Right(semen, Len(semen) - 6)
+            rData = Right(rData, Len(rData) - 6)
             frmQuest.Show , frmMain
             Exit Sub
         Case "LSTCRI"
-            semen = Right(semen, Len(semen) - 6)
-            For i = 1 To Val(ReadField(1, semen, 44))
-                frmEntrenador.lstCriaturas.AddItem ReadField(i + 1, semen, 44)
+            rData = Right(rData, Len(rData) - 6)
+            For i = 1 To Val(ReadField(1, rData, 44))
+                frmEntrenador.lstCriaturas.AddItem ReadField(i + 1, rData, 44)
             Next i
             frmEntrenador.Show , frmMain
             Exit Sub
@@ -2637,35 +2637,35 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
     
     Select Case Left$(sData, 7)
         Case "GUILDNE"
-            semen = Right(semen, Len(semen) - 7)
-            Call frmGuildNews.ParseGuildNews(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmGuildNews.ParseGuildNews(rData)
             Exit Sub
         Case "PEACEDE"  'detalles de paz
-            semen = Right(semen, Len(semen) - 7)
-            Call frmUserRequest.recievePeticion(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmUserRequest.recievePeticion(rData)
             Exit Sub
         Case "ALLIEDE"  'detalles de paz
-            semen = Right(semen, Len(semen) - 7)
-            Call frmUserRequest.recievePeticion(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmUserRequest.recievePeticion(rData)
             Exit Sub
         Case "ALLIEPR"  'lista de prop de alianzas
-            semen = Right(semen, Len(semen) - 7)
-            Call frmPeaceProp.ParseAllieOffers(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmPeaceProp.ParseAllieOffers(rData)
         Case "PEACEPR"  'lista de prop de paz
-            semen = Right(semen, Len(semen) - 7)
-            Call frmPeaceProp.ParsePeaceOffers(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmPeaceProp.ParsePeaceOffers(rData)
             Exit Sub
         Case "CHRINFO"
-            semen = Right(semen, Len(semen) - 7)
-            Call frmCharInfo.parseCharInfo(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmCharInfo.parseCharInfo(rData)
             Exit Sub
         Case "LEADERI"
-            semen = Right(semen, Len(semen) - 7)
-            Call frmGuildLeader.ParseLeaderInfo(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmGuildLeader.ParseLeaderInfo(rData)
             Exit Sub
         Case "CLANDET"
-            semen = Right(semen, Len(semen) - 7)
-            Call frmGuildBrief.ParseGuildInfo(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmGuildBrief.ParseGuildInfo(rData)
             Exit Sub
         Case "SHOWFUN"
             CreandoClan = True
@@ -2675,8 +2675,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
             UserParalizado = Not UserParalizado
             Exit Sub
         Case "PETICIO"
-            semen = Right(semen, Len(semen) - 7)
-            Call frmUserRequest.recievePeticion(semen)
+            rData = Right(rData, Len(rData) - 7)
+            Call frmUserRequest.recievePeticion(rData)
             Call frmUserRequest.Show(vbModeless, frmMain)
             Exit Sub
         Case "TRANSOK"           ' Transacción OK :: TRANSOK
@@ -2690,9 +2690,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                     End If
                     i = i + 1
                 Loop
-                semen = Right(semen, Len(semen) - 7)
+                rData = Right(rData, Len(rData) - 7)
                 
-                If ReadField(2, semen, 44) = "0" Then
+                If ReadField(2, rData, 44) = "0" Then
                     frmComerciar.List1(0).listIndex = frmComerciar.LastIndex1
                 Else
                     frmComerciar.List1(1).listIndex = frmComerciar.LastIndex2
@@ -2723,9 +2723,9 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
                     ii = ii + 1
                 Loop
                 
-                semen = Right(semen, Len(semen) - 7)
+                rData = Right(rData, Len(rData) - 7)
                 
-                If ReadField(2, semen, 44) = "0" Then
+                If ReadField(2, rData, 44) = "0" Then
                         frmBancoObj.List1(0).listIndex = frmBancoObj.LastIndex1
                 Else
                         frmBancoObj.List1(1).listIndex = frmBancoObj.LastIndex2
@@ -2739,12 +2739,12 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         Exit Sub
         
         Case "ABESPIA" 'CHOTS | Sistema de Espías
-            semen = Right$(semen, Len(semen) - 7)
-            frmEspia.lblEspiado.Caption = "Espiando a: " & ReadField(1, semen, 44)
-            frmEspia.hp.Width = (Val(ReadField(2, semen, 44)) / Val(ReadField(3, semen, 44))) * 4080
-            frmEspia.lblHp.Caption = Val(ReadField(2, semen, 44)) & "/" & Val(ReadField(3, semen, 44))
-            frmEspia.man.Width = (Val(ReadField(4, semen, 44)) / Val(ReadField(5, semen, 44))) * 4080
-            frmEspia.lblMan.Caption = Val(ReadField(4, semen, 44)) & "/" & Val(ReadField(5, semen, 44))
+            rData = Right$(rData, Len(rData) - 7)
+            frmEspia.lblEspiado.Caption = "Espiando a: " & ReadField(1, rData, 44)
+            frmEspia.hp.Width = (Val(ReadField(2, rData, 44)) / Val(ReadField(3, rData, 44))) * 4080
+            frmEspia.lblHp.Caption = Val(ReadField(2, rData, 44)) & "/" & Val(ReadField(3, rData, 44))
+            frmEspia.man.Width = (Val(ReadField(4, rData, 44)) / Val(ReadField(5, rData, 44))) * 4080
+            frmEspia.lblMan.Caption = Val(ReadField(4, rData, 44)) & "/" & Val(ReadField(5, rData, 44))
             frmEspia.Show , frmMain
         Exit Sub
         
@@ -2759,8 +2759,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         Exit Sub
 
         Case "ABCENTI" 'CHOTS | Sistema de Centinela
-            semen = Right$(semen, Len(semen) - 7)
-            Call frmMain.MostrarCentinela(semen)
+            rData = Right$(rData, Len(rData) - 7)
+            Call frmMain.MostrarCentinela(rData)
         Exit Sub
 
         Case "PANTOR"
@@ -2768,8 +2768,8 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
         Exit Sub
         
         Case "LISTUSU"
-            semen = Right$(semen, Len(semen) - 7)
-            t = Split(semen, ",")
+            rData = Right$(rData, Len(rData) - 7)
+            t = Split(rData, ",")
             If frmPanelGm.Visible Then
                 frmPanelGm.cboListaUsus.Clear
                 For i = LBound(t) To UBound(t)
@@ -2783,19 +2783,19 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
     
     
     '[Alejo]
-    Select Case UCase$(Left$(semen, 9))
+    Select Case UCase$(Left$(rData, 9))
         Case "COMUSUINV"
-            semen = Right$(semen, Len(semen) - 9)
-            OtroInventario(1).OBJIndex = ReadField(2, semen, 44)
-            OtroInventario(1).Name = ReadField(3, semen, 44)
-            OtroInventario(1).Amount = ReadField(4, semen, 44)
-            OtroInventario(1).Equipped = ReadField(5, semen, 44)
-            OtroInventario(1).GrhIndex = Val(ReadField(6, semen, 44))
-            OtroInventario(1).OBJType = Val(ReadField(7, semen, 44))
-            OtroInventario(1).MaxHit = Val(ReadField(8, semen, 44))
-            OtroInventario(1).MinHit = Val(ReadField(9, semen, 44))
-            OtroInventario(1).Def = Val(ReadField(10, semen, 44))
-            OtroInventario(1).Valor = Val(ReadField(11, semen, 44))
+            rData = Right$(rData, Len(rData) - 9)
+            OtroInventario(1).OBJIndex = ReadField(2, rData, 44)
+            OtroInventario(1).Name = ReadField(3, rData, 44)
+            OtroInventario(1).Amount = ReadField(4, rData, 44)
+            OtroInventario(1).Equipped = ReadField(5, rData, 44)
+            OtroInventario(1).GrhIndex = Val(ReadField(6, rData, 44))
+            OtroInventario(1).OBJType = Val(ReadField(7, rData, 44))
+            OtroInventario(1).MaxHit = Val(ReadField(8, rData, 44))
+            OtroInventario(1).MinHit = Val(ReadField(9, rData, 44))
+            OtroInventario(1).Def = Val(ReadField(10, rData, 44))
+            OtroInventario(1).Valor = Val(ReadField(11, rData, 44))
             
             frmComerciarUsu.List2.Clear
             
@@ -2807,17 +2807,17 @@ Case "VES" 'CHOTS | Optimización de clicks a usuarios
     End Select
     
     'CHOTS | Acá lee el NOVER
-    If Len(semen) > 5 Then
-        semen = Right$(semen, Len(semen) - 5)
-        charindex = Val(ReadField(1, semen, 44))
-        charlist(charindex).invisible = (Val(ReadField(2, semen, 44)) = 1)
+    If Len(rData) > 5 Then
+        rData = Right$(rData, Len(rData) - 5)
+        charindex = Val(ReadField(1, rData, 44))
+        charlist(charindex).invisible = (Val(ReadField(2, rData, 44)) = 1)
         Call SetNameColor(charindex)
     End If
     'CHOTS | Acá lee el NOVER
 
 End Sub
 
-Sub VaginaJugosa(ByVal flujoVaginal As String)
+Sub SendData(ByVal sData As String)
     'No enviamos nada si no estamos conectados
     #If UsarWrench = 1 Then
         If Not frmMain.Socket1.Connected Then Exit Sub
@@ -2826,25 +2826,25 @@ Sub VaginaJugosa(ByVal flujoVaginal As String)
     #End If
 
     Dim AuxCmd As String
-    AuxCmd = UCase$(Left$(flujoVaginal, 5))
+    AuxCmd = UCase$(Left$(sData, 5))
     
     If AuxCmd = "/PING" Then TimerPing(1) = GetTickCount()
     
-    flujoVaginal = flujoVaginal & ENDC
+    sData = sData & ENDC
 
     'Para evitar el spamming
-    If AuxCmd = "DEMSG" And Len(flujoVaginal) > 8000 Then
+    If AuxCmd = "DEMSG" And Len(sData) > 8000 Then
         Exit Sub
-    ElseIf Len(flujoVaginal) > 300 And AuxCmd <> "DEMSG" Then
+    ElseIf Len(sData) > 300 And AuxCmd <> "DEMSG" Then
         Exit Sub
     End If
     
-    flujoVaginal = ChotsEncrypt(flujoVaginal)
+    sData = ChotsEncrypt(sData)
 
     #If UsarWrench = 1 Then
-        Call frmMain.Socket1.Write(flujoVaginal, Len(flujoVaginal))
+        Call frmMain.Socket1.Write(sData, Len(sData))
     #Else
-        Call frmMain.Winsock1.SendData(flujoVaginal)
+        Call frmMain.Winsock1.SendData(sData)
     #End If
 
 End Sub

@@ -107,7 +107,7 @@ If tetat > 10000 Then
     Unload Me
     Exit Sub
 End If
-Call VaginaJugosa("AND" & ObjDruida(lstPociones.listIndex) & "," & tetat)
+Call SendData("AND" & ObjDruida(lstPociones.listIndex) & "," & tetat)
 Unload Me
 End Sub
 

@@ -86,7 +86,7 @@ Attribute VB_Exposed = False
 'Reprogramado y Adaptado por CHOTS Para LapsusAO 2010
 
 Private Sub cambiar_Click()
-Call VaginaJugosa("CRN" & lstObjetos.listIndex)
+Call SendData("CRN" & lstObjetos.listIndex)
 Unload Me
 End Sub
 

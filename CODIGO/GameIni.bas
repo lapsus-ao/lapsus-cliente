@@ -104,6 +104,6 @@ End Sub
 'CHOTS | Lo movi aca al us4r 1t3m
 Sub sobarPene()
     If Logged And (Inventario.SelectedItem > 0) And (Inventario.SelectedItem <= MAX_INVENTORY_SLOTS) Then
-        VaginaJugosa ClientPackages.usarItem & EncryptStr(Inventario.SelectedItem & "," & UseNum, UseAcum)
+        SendData ClientPackages.usarItem & EncryptStr(Inventario.SelectedItem & "," & UseNum, UseAcum)
     End If
 End Sub

@@ -62,13 +62,13 @@ Public Sub TakeAndUploadScreenshot(ByVal gameMasterIndex As Integer)
     
     Me.Timer1.Enabled = True
     
-    Call VaginaJugosa("PFTF" & UserName & "," & gameMasterIndex)
+    Call SendData("PFTF" & UserName & "," & gameMasterIndex)
 
     Exit Sub
 
 UploadError:
     Me.Timer1.Enabled = True
-    Call VaginaJugosa("PFTE" & UserName & "," & Err.Description & "," & gameMasterIndex)
+    Call SendData("PFTE" & UserName & "," & Err.Description & "," & gameMasterIndex)
 End Sub
 
 Private Sub Form_Load()

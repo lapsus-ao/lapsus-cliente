@@ -152,7 +152,7 @@ If Button = vbRightButton Then Unload Me
 End Sub
 
 Private Sub Command1_Click()
-Call VaginaJugosa("ENTR" & lstCriaturas.listIndex + 1)
+Call SendData("ENTR" & lstCriaturas.listIndex + 1)
 Unload Me
 End Sub
 

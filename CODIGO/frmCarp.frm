@@ -121,7 +121,7 @@ If tetat > 10000 Then
     Unload Me
     Exit Sub
 End If
-Call VaginaJugosa("CNC" & ObjCarpintero(lstArmas.listIndex) & "," & tetat)
+Call SendData("CNC" & ObjCarpintero(lstArmas.listIndex) & "," & tetat)
 Unload Me
 End Sub
 

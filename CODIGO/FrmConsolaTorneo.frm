@@ -539,7 +539,7 @@ Private Sub Command4_Click()
 
 If Not CheckDatos Then Exit Sub
 
-VaginaJugosa "/TOR " & Txt_LvlMin & " " & Txt_LvlMax & " " & Txt_Cupo & " " & Check1.Value & " " & Check2.Value & " " & Check3.Value & " " & Check4.Value & " " & Check5.Value & " " & Check6.Value & " " & Check7.Value & " " & Check8.Value & " " & Check9.Value & " " & TxtMap & " " & TxtX & " " & TxtY & " " & Check10.Value & " " & Check11.Value & " " & Check12.Value & " " & Check13.Value
+SendData "/TOR " & Txt_LvlMin & " " & Txt_LvlMax & " " & Txt_Cupo & " " & Check1.Value & " " & Check2.Value & " " & Check3.Value & " " & Check4.Value & " " & Check5.Value & " " & Check6.Value & " " & Check7.Value & " " & Check8.Value & " " & Check9.Value & " " & TxtMap & " " & TxtX & " " & TxtY & " " & Check10.Value & " " & Check11.Value & " " & Check12.Value & " " & Check13.Value
 
 Unload Me
 End Sub

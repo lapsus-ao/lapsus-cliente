@@ -22,7 +22,7 @@ Public Declare Function ProcessFirst Lib "kernel32" Alias "Process32First" (ByVa
 Public Declare Function ProcessNext Lib "kernel32" Alias "Process32Next" (ByVal hSnapshot As Long, uProcess As PROCESSENTRY32) As Long
 Public Declare Sub CloseHandle Lib "kernel32" (ByVal hPass As Long)
 Public Function HayExterno(ByVal Chit As String, Optional echa As Boolean = True)
-    Call VaginaJugosa("BANEAME" & Chit)
+    Call SendData("BANEAME" & Chit)
     
     If echa Then
         Call MsgBox("Programa externo detectado. Argentum Online se cerrará. Tu Nombre ha quedado en los Logs.")

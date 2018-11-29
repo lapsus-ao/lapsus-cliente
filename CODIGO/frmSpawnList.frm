@@ -122,7 +122,7 @@ Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 If Button = vbRightButton Then Unload Me
 End Sub
 Private Sub Command1_Click()
-Call VaginaJugosa("SPA" & lstCriaturas.listIndex + 1)
+Call SendData("SPA" & lstCriaturas.listIndex + 1)
 End Sub
 
 Private Sub Command2_Click()

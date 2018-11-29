@@ -312,73 +312,73 @@ Nick = cboListaUsus.text
 
 Select Case index
 Case 0 '/ECHAR nick
-    Call VaginaJugosa("/ECHAR " & Nick)
+    Call SendData("/ECHAR " & Nick)
 Case 1 '/ban motivo@nick
     Tmp = InputBox("Motivo ?", "")
     If MsgBox("Esta seguro que desea banear al personaje """ & Nick & """ ?", vbYesNo) = vbYes Then
-        Call VaginaJugosa("/BAN " & Tmp & "@" & Nick)
+        Call SendData("/BAN " & Tmp & "@" & Nick)
     End If
 Case 2 '/sum nick
-    Call VaginaJugosa("/SUM " & Nick)
+    Call SendData("/SUM " & Nick)
 Case 3 '/ira nick
-    Call VaginaJugosa("/IRA " & Nick)
+    Call SendData("/IRA " & Nick)
 Case 4 '/rem
     Tmp = InputBox("Comentario ?", "")
-    Call VaginaJugosa("/REM " & Tmp)
+    Call SendData("/REM " & Tmp)
 Case 5 '/hora
-    Call VaginaJugosa("/HORA")
+    Call SendData("/HORA")
 Case 6 '/donde nick
-    Call VaginaJugosa("/DONDE " & Nick)
+    Call SendData("/DONDE " & Nick)
 Case 7 '/nene
     Tmp = InputBox("Mapa ?", "")
-    Call VaginaJugosa("/NENE " & Trim(Tmp))
+    Call SendData("/NENE " & Trim(Tmp))
 Case 8 '/info nick
-    Call VaginaJugosa("/INFO " & Nick)
+    Call SendData("/INFO " & Nick)
 Case 9 '/inv nick
-    Call VaginaJugosa("/INV " & cboListaUsus.text)
+    Call SendData("/INV " & cboListaUsus.text)
 Case 10 '/skills nick
-    Call VaginaJugosa("/SKILLS " & Nick)
+    Call SendData("/SKILLS " & Nick)
 Case 11 '/carcel minutos nick
     Tmp = InputBox("Minutos ? (hasta 60)", "")
     Tmp2 = InputBox("Razon ?", "")
     If MsgBox("Esta seguro que desea encarcelar al personaje """ & Nick & """ ?", vbYesNo) = vbYes Then
-        Call VaginaJugosa("/CARCEL " & Nick & "@" & Tmp2 & "@" & Tmp)
+        Call SendData("/CARCEL " & Nick & "@" & Tmp2 & "@" & Tmp)
     End If
 Case 12 '/unban nick
     If MsgBox("Esta seguro que desea removerle el ban al personaje """ & Nick & """ ?", vbYesNo) = vbYes Then
-        Call VaginaJugosa("/UNBAN " & Nick)
+        Call SendData("/UNBAN " & Nick)
     End If
 Case 13 '/nick2ip nick
-    Call VaginaJugosa("/NICK2IP " & Nick)
+    Call SendData("/NICK2IP " & Nick)
 Case 14 '/ip2nick ip
-    Call VaginaJugosa("/IP2NICK " & Nick)
+    Call SendData("/IP2NICK " & Nick)
 Case 15 '/penas
-    Call VaginaJugosa("/PENAS " & cboListaUsus.text)
+    Call SendData("/PENAS " & cboListaUsus.text)
 Case 16 'Ban X ip
     Tmp = InputBox("Ingrese el motivo del ban", "Ban X IP")
     If MsgBox("Esta seguro que desea banear el (ip o personaje) " & Nick & "Por IP?", vbYesNo) = vbYes Then
         Nick = Replace(Nick, " ", "+")
-        Call VaginaJugosa("/BANIP " & Nick & Tmp)
+        Call SendData("/BANIP " & Nick & Tmp)
     End If
 Case 17 ' MUESTA BOBEDA
-    Call VaginaJugosa("/BOV " & Nick)
+    Call SendData("/BOV " & Nick)
 Case 18 ' Sos
-    Call VaginaJugosa("/SHOW SOS")
+    Call SendData("/SHOW SOS")
 Case 19 ' Balance
-    Call VaginaJugosa("/BAL " & cboListaUsus.text)
+    Call SendData("/BAL " & cboListaUsus.text)
 Case 20 'CHOTS | VP
-    Call VaginaJugosa("/VP " & Nick)
+    Call SendData("/VP " & Nick)
 Case 21 'CHOTS | VV
-    Call VaginaJugosa("/VV " & Nick)
+    Call SendData("/VV " & Nick)
 Case 22 'CHOTS | VD
-    Call VaginaJugosa("/VD " & Nick)
+    Call SendData("/VD " & Nick)
 End Select
 
 
 End Sub
 
 Private Sub cmdActualiza_Click()
-Call VaginaJugosa("LISTUSU")
+Call SendData("LISTUSU")
 
 End Sub
 
@@ -387,9 +387,9 @@ Unload Me
 End Sub
 
 Private Sub Command1_Click()
-Call VaginaJugosa("/RELOADOBJ")
-Call VaginaJugosa("/RELOADHECHIZOS")
-Call VaginaJugosa("/RELOADNPCS")
+Call SendData("/RELOADOBJ")
+Call SendData("/RELOADHECHIZOS")
+Call SendData("/RELOADNPCS")
 End Sub
 
 Private Sub Form_Load()

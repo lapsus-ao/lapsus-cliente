@@ -110,7 +110,7 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub cmdStop_Click()
-Call VaginaJugosa("/ESPIAR IOPUJA")
+Call SendData("/ESPIAR IOPUJA")
 Unload frmEspia
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)

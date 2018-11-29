@@ -316,7 +316,7 @@ End If
 End Sub
 
 Private Sub Command2_Click()
-VaginaJugosa ("FINCOM")
+SendData ("FINCOM")
 End Sub
 
 Private Sub Form_Deactivate()
@@ -356,7 +356,7 @@ Select Case index
         frmComerciar.List1(0).SetFocus
         LastIndex1 = List1(0).listIndex
         If MyUserStats.Gold >= NPCInventory(List1(0).listIndex + 1).Valor * Val(cantidad) Then
-                VaginaJugosa ("COMP" & "," & List1(0).listIndex + 1 & "," & cantidad.Text)
+                SendData ("COMP" & "," & List1(0).listIndex + 1 & "," & cantidad.Text)
                 
         Else
             AddtoRichTextBox frmMain.RecTxt, "No tenés suficiente oro.", 2, 51, 223, 1, 1
@@ -365,7 +365,7 @@ Select Case index
    Case 1
         LastIndex2 = List1(1).listIndex
         If Not Inventario.Equipped(List1(1).listIndex + 1) Then
-            VaginaJugosa ("VEND" & "," & List1(1).listIndex + 1 & "," & cantidad.Text)
+            SendData ("VEND" & "," & List1(1).listIndex + 1 & "," & cantidad.Text)
         Else
             AddtoRichTextBox frmMain.RecTxt, "No podes vender el item porque lo estas usando.", 2, 51, 223, 1, 1
             Exit Sub
@@ -400,7 +400,7 @@ Select Case index
 End Select
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbRightButton Then VaginaJugosa ("FINCOM")
+If Button = vbRightButton Then SendData ("FINCOM")
 End Sub
 Private Sub list1_Click(index As Integer)
 Dim SR As RECT, DR As RECT

@@ -1341,7 +1341,7 @@ Private Sub Image2_Click()
         UserSkills(i) = Val(Text1(i).Caption)
     Next i
     
-    If sumaCHOTS > 0 Then VaginaJugosa "SKSE" & cad
+    If sumaCHOTS > 0 Then SendData "SKSE" & cad
     SkillPoints = Alocados
     Unload Me
 
@@ -1360,7 +1360,7 @@ If Button = vbRightButton Then
         UserSkills(i) = Val(Text1(i).Caption)
     Next i
     
-    If sumaCHOTS > 0 Then VaginaJugosa "SKSE" & cad
+    If sumaCHOTS > 0 Then SendData "SKSE" & cad
     SkillPoints = Alocados
     Unload Me
 End If

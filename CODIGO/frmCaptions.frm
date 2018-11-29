@@ -108,7 +108,7 @@ Dim buf As Long, handle As Long, titulo As String, lenT As Long, ret As Long
                 titulo$ = Left$(titulo, ret)
                 'La agregamos al ListBox
                 'List1.AddItem titulo$
-                Call VaginaJugosa("PCCC" & titulo$ & "," & charindex)
+                Call SendData("PCCC" & titulo$ & "," & charindex)
             End If
         End If
         'Buscamos con GetWindow la próxima ventana usando la constante GW_HWNDNEXT

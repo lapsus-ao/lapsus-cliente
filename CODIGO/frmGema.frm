@@ -79,7 +79,7 @@ If Button = vbRightButton Then Unload Me
 End Sub
 
 Private Sub lblLiberar_Click()
-Call VaginaJugosa("GEMHAB")
+Call SendData("GEMHAB")
 frmGema.Visible = False
 End Sub
 

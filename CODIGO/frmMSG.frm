@@ -173,16 +173,16 @@ End Sub
 
 Private Sub mnuBorrar_Click()
 If List1.listIndex < 0 Then Exit Sub
-VaginaJugosa ("SOSDONE" & List1.List(List1.listIndex))
+SendData ("SOSDONE" & List1.List(List1.listIndex))
 
 List1.RemoveItem List1.listIndex
 
 End Sub
 
 Private Sub mnuIR_Click()
-VaginaJugosa ("/IRA " & ReadField(1, List1.List(List1.listIndex), Asc("-")))
+SendData ("/IRA " & ReadField(1, List1.List(List1.listIndex), Asc("-")))
 End Sub
 
 Private Sub mnutraer_Click()
-VaginaJugosa ("/SUM " & ReadField(1, List1.List(List1.listIndex), Asc("-")))
+SendData ("/SUM " & ReadField(1, List1.List(List1.listIndex), Asc("-")))
 End Sub

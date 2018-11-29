@@ -389,7 +389,7 @@ frmCommet.t = ALIANZA
 frmCommet.Caption = "Ingrese propuesta de alianza"
 Call frmCommet.Show(vbModal, frmGuildBrief)
 
-'Call VaginaJugosa("OFRECALI" & Right(Nombre, Len(Nombre) - 7))
+'Call SendData("OFRECALI" & Right(Nombre, Len(Nombre) - 7))
 'Unload Me
 End Sub
 
@@ -416,7 +416,7 @@ End Sub
 
 
 Private Sub Guerra_Click()
-Call VaginaJugosa("DECGUERR" & Right(Nombre.Caption, Len(Nombre.Caption) - 7))
+Call SendData("DECGUERR" & Right(Nombre.Caption, Len(Nombre.Caption) - 7))
 Unload Me
 End Sub
 

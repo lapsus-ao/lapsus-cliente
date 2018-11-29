@@ -180,18 +180,18 @@ End Sub
 Private Sub Command2_Click()
 'Me.Visible = False
 If tipoprop = PAZ Then
-    Call VaginaJugosa("PEACEDET" & lista.List(lista.listIndex))
+    Call SendData("PEACEDET" & lista.List(lista.listIndex))
 Else
-    Call VaginaJugosa("ALLIEDET" & lista.List(lista.listIndex))
+    Call SendData("ALLIEDET" & lista.List(lista.listIndex))
 End If
 End Sub
 
 Private Sub Command3_Click()
 'Me.Visible = False
 If tipoprop = PAZ Then
-    Call VaginaJugosa("ACEPPEAT" & lista.List(lista.listIndex))
+    Call SendData("ACEPPEAT" & lista.List(lista.listIndex))
 Else
-    Call VaginaJugosa("ACEPALIA" & lista.List(lista.listIndex))
+    Call SendData("ACEPALIA" & lista.List(lista.listIndex))
 End If
 Me.Hide
 Unload Me
@@ -199,9 +199,9 @@ End Sub
 
 Private Sub Command4_Click()
 If tipoprop = PAZ Then
-    Call VaginaJugosa("RECPPEAT" & lista.List(lista.listIndex))
+    Call SendData("RECPPEAT" & lista.List(lista.listIndex))
 Else
-    Call VaginaJugosa("RECPALIA" & lista.List(lista.listIndex))
+    Call SendData("RECPALIA" & lista.List(lista.listIndex))
 End If
 Me.Hide
 Unload Me

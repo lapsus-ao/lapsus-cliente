@@ -275,7 +275,7 @@ Option Explicit
 Public LastIndex1 As Integer
 Public LastIndex2 As Integer
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbRightButton Then VaginaJugosa ("FINBAN")
+If Button = vbRightButton Then SendData ("FINBAN")
 End Sub
 
 Private Sub cantidad_Change()
@@ -298,7 +298,7 @@ End If
 End Sub
 
 Private Sub Command2_Click()
-VaginaJugosa ("FINBAN")
+SendData ("FINBAN")
 End Sub
 
 
@@ -340,12 +340,12 @@ Select Case index
         frmBancoObj.List1(0).SetFocus
         LastIndex1 = List1(0).listIndex
         
-        VaginaJugosa ("RETI" & "," & List1(0).listIndex + 1 & "," & cantidad.text)
+        SendData ("RETI" & "," & List1(0).listIndex + 1 & "," & cantidad.text)
         
    Case 1
         LastIndex2 = List1(1).listIndex
         If Not Inventario.Equipped(List1(1).listIndex + 1) Then
-            VaginaJugosa ("DEPO" & "," & List1(1).listIndex + 1 & "," & cantidad.text)
+            SendData ("DEPO" & "," & List1(1).listIndex + 1 & "," & cantidad.text)
         Else
             AddtoRichTextBox frmMain.RecTxt, "No podes depositar el item porque lo estas usando.", 2, 51, 223, 1, 1
             Exit Sub

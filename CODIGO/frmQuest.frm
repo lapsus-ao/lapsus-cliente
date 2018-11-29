@@ -117,7 +117,7 @@ Unload Me
 End Sub
 
 Private Sub iniciar_Click()
-Call VaginaJugosa("REAQ" & lstQuest.listIndex + 1)
+Call SendData("REAQ" & lstQuest.listIndex + 1)
 Unload frmQuest
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)

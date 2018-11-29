@@ -67,7 +67,7 @@ Dim puntos As Integer
 puntos = 0
 puntos = Val(InputBox("Ingrese la cantidad de Puntos a Transferir:", , 0))
 If puntos < 1 Then Exit Sub
-Call VaginaJugosa("TPT" & lstClan.text & "," & puntos)
+Call SendData("TPT" & lstClan.text & "," & puntos)
 Unload Me
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)

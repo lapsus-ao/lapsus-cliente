@@ -222,7 +222,7 @@ Private Sub Image3_Click()
 If Val(txtPuntos.Text) > 32767 Or Val(txtOro.Text) > 999999999 Then
     MsgBox "El maximo de oro para jugar es de 999.999.999 monedas, y el máximo de puntos es de 32.767", , "Error"
 Else
-    VaginaJugosa "/RETA1 " & txtOponente.Text & "@" & txtPuntos.Text & "@" & chkItems.Value & "@" & txtOro.Text & "@" & "" & "@" & ""
+    SendData "/RETA1 " & txtOponente.Text & "@" & txtPuntos.Text & "@" & chkItems.Value & "@" & txtOro.Text & "@" & "" & "@" & ""
     Unload Me
 End If
 End Sub
@@ -247,7 +247,7 @@ Private Sub imgComenzar_Click()
 If Val(txtPuntos2.Text) > 32767 Or Val(txtOro2.Text) > 999999999 Then
     MsgBox "El maximo de oro para jugar es de 999.999.999 monedas, y el máximo de puntos es de 32.767", , "Error"
 Else
-    VaginaJugosa "/RETA1 " & txtRival1.Text & "@" & txtPuntos2.Text & "@" & chkItems2.Value & "@" & txtOro2.Text & "@" & txtPareja.Text & "@" & txtRival2.Text
+    SendData "/RETA1 " & txtRival1.Text & "@" & txtPuntos2.Text & "@" & chkItems2.Value & "@" & txtOro2.Text & "@" & txtPareja.Text & "@" & txtRival2.Text
     Unload Me
 End If
 End Sub

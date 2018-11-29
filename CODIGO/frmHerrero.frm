@@ -157,9 +157,9 @@ If tortugazeta > 10000 Then
     Exit Sub
 End If
 If lstArmas.Visible Then
-    Call VaginaJugosa("CNS" & ArmasHerrero(lstArmas.listIndex) & "," & tortugazeta)
+    Call SendData("CNS" & ArmasHerrero(lstArmas.listIndex) & "," & tortugazeta)
 Else
-    Call VaginaJugosa("CNS" & ArmadurasHerrero(lstArmaduras.listIndex) & "," & tortugazeta)
+    Call SendData("CNS" & ArmadurasHerrero(lstArmaduras.listIndex) & "," & tortugazeta)
 End If
 
 Unload Me

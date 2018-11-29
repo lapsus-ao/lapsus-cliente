@@ -1442,7 +1442,7 @@ Private Sub tirarDados()
 #Else
     If frmMain.Winsock1.State = sckConnected Then
 #End If
-        Call VaginaJugosa(ClientPackages.tirarDados)
+        Call SendData(ClientPackages.tirarDados)
     End If
 
 End Sub

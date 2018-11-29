@@ -99,7 +99,7 @@ Private Sub Command2_Click()
 End Sub
 
 Private Sub cambiar_Click()
-Call VaginaJugosa("CTR" & lstObjetos.listIndex)
+Call SendData("CTR" & lstObjetos.listIndex)
 Unload Me
 End Sub
 

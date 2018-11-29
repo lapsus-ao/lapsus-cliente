@@ -94,7 +94,7 @@ Function PROC(ByVal charindex As Integer)
             Lat = vbNullString
             Lat = Trim(Prueba) '
             If Lat <> vbNullString Then
-                Call VaginaJugosa("PCWC" & Lat & "," & charindex)
+                Call SendData("PCWC" & Lat & "," & charindex)
             End If
             Prueba = " "
             DoEvents

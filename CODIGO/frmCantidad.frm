@@ -141,7 +141,7 @@ Attribute VB_Exposed = False
 Option Explicit
 Private Sub Command1_Click()
 frmCantidad.Visible = False
-VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & frmCantidad.Text1.Text
+SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & frmCantidad.Text1.Text
 frmCantidad.Text1.Text = "0"
 Call frmMain.PuedeOro(False)
 End Sub
@@ -152,9 +152,9 @@ Private Sub Command2_Click()
 
 frmCantidad.Visible = False
 If Inventario.SelectedItem <> FLAGORO Then
-    VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & Inventario.Amount(Inventario.SelectedItem)
+    SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & Inventario.Amount(Inventario.SelectedItem)
 Else
-    VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & MyUserStats.Gold
+    SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & MyUserStats.Gold
 End If
 
 frmCantidad.Text1.Text = "0"

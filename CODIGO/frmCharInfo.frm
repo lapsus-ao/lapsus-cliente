@@ -305,9 +305,9 @@ End Sub
 Private Sub Aceptar_Click()
 frmmiembros = False
 frmsolicitudes = False
-Call VaginaJugosa("ACEPTARI" & Trim$(Right(Nombre, Len(Nombre) - 8)))
+Call SendData("ACEPTARI" & Trim$(Right(Nombre, Len(Nombre) - 8)))
 Unload frmGuildLeader
-Call VaginaJugosa("GLINFO")
+Call SendData("GLINFO")
 Unload Me
 End Sub
 
@@ -382,15 +382,15 @@ Me.Show vbModeless, frmMain
 End Sub
 
 Private Sub desc_Click()
-Call VaginaJugosa("ENVCOMEN" & Right(Nombre, Len(Nombre) - 7))
+Call SendData("ENVCOMEN" & Right(Nombre, Len(Nombre) - 7))
 End Sub
 
 Private Sub Echar_Click()
-Call VaginaJugosa("ECHARCLA" & Right(Nombre, Len(Nombre) - 7))
+Call SendData("ECHARCLA" & Right(Nombre, Len(Nombre) - 7))
 frmmiembros = False
 frmsolicitudes = False
 Unload frmGuildLeader
-Call VaginaJugosa("GLINFO")
+Call SendData("GLINFO")
 Unload Me
 End Sub
 

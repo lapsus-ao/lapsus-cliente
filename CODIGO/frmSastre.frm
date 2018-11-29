@@ -106,7 +106,7 @@ If tetat > 10000 Then
     Unload Me
     Exit Sub
 End If
-Call VaginaJugosa("CND" & ObjSastre(lstRopas.listIndex) & "," & tetat)
+Call SendData("CND" & ObjSastre(lstRopas.listIndex) & "," & tetat)
 Unload Me
 End Sub
 

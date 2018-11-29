@@ -262,10 +262,10 @@ Attribute VB_Exposed = False
 Option Explicit
 
 Private Sub cmdAceptar_Click()
-Call VaginaJugosa("COMUSUOK")
+Call SendData("COMUSUOK")
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
-If Button = vbRightButton Then Call VaginaJugosa("FINCOMUSU")
+If Button = vbRightButton Then Call SendData("FINCOMUSU")
 End Sub
 
 Private Sub cmdOfrecer_Click()
@@ -276,9 +276,9 @@ If optQue(0).Value = True Then
 End If
 
 If optQue(0).Value = True Then
-    Call VaginaJugosa("OFRECER" & List1.listIndex + 1 & "," & Trim(Val(txtCant.text)))
+    Call SendData("OFRECER" & List1.listIndex + 1 & "," & Trim(Val(txtCant.text)))
 ElseIf optQue(1).Value = True Then
-    Call VaginaJugosa("OFRECER" & FLAGORO & "," & Trim(Val(txtCant.text)))
+    Call SendData("OFRECER" & FLAGORO & "," & Trim(Val(txtCant.text)))
 Else
     Exit Sub
 End If
@@ -288,11 +288,11 @@ lblEstadoResp.Visible = True
 End Sub
 
 Private Sub cmdRechazar_Click()
-Call VaginaJugosa("COMUSUNO")
+Call SendData("COMUSUNO")
 End Sub
 
 Private Sub Command2_Click()
-Call VaginaJugosa("FINCOMUSU")
+Call SendData("FINCOMUSU")
 
 End Sub
 

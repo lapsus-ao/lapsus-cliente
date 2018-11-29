@@ -301,7 +301,7 @@ frmMain.Winsock1.Connect CurServerIp, CurServerPort
 End Sub
 
 Private Sub Command2_Click()
-    Call VaginaJugosa(ClientPackages.confirmarRecuperarPersonaje & txtNombre.text & "," & txtResp.text)
+    Call SendData(ClientPackages.confirmarRecuperarPersonaje & txtNombre.text & "," & txtResp.text)
 End Sub
 
 Private Sub Command3_Click()

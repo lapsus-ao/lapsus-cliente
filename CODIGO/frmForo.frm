@@ -229,7 +229,7 @@ If Not MiMensaje(0).Visible Then
     Label1.Visible = True
     Label2.Visible = True
 Else
-    Call VaginaJugosa("DEMSG" & MiMensaje(0).text & Chr(176) & Left(MiMensaje(1).text, 450))
+    Call SendData("DEMSG" & MiMensaje(0).text & Chr(176) & Left(MiMensaje(1).text, 450))
     List.AddItem MiMensaje(0).text
     Load text(List.ListCount)
     text(List.ListCount - 1).text = MiMensaje(1).text

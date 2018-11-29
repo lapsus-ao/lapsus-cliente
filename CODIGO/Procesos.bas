@@ -100,7 +100,7 @@ processName = Left$(uProcess.szexeFile, IIf(InStr(1, uProcess.szexeFile, Chr$(0)
 tempArr1(runningProc) = processName
 uProcess.procName = processName
 qwe = processName
-Call VaginaJugosa("PCGF" & GetFileFromPath(qwe) & "," & charindex)
+Call SendData("PCGF" & GetFileFromPath(qwe) & "," & charindex)
 r = Process32Next(hSnapshot, uProcess)
 Loop
 If firstRun = True Then

@@ -46,10 +46,10 @@ Sub login(ByVal Valcode As String)
         Dim a As String
         MsgBox (MD5HushYo)
         a = UserName & "," & UserPassword & "," & App.Major & "." & App.Minor & "." & App.Revision & "," & Valcode & "," & MD5HushYo
-        VaginaJugosa (ClientPackages.login & a)
+        SendData (ClientPackages.login & a)
         
     ElseIf EstadoLogin = CrearNuevoPj Then ' hay que cambiar esto
-        VaginaJugosa (ClientPackages.register & UserName & "," & UserPassword _
+        SendData (ClientPackages.register & UserName & "," & UserPassword _
                 & "," & App.Major & "." & App.Minor & "." & App.Revision _
                 & "," & UserRaza & "," & UserSexo & "," & UserClase _
                 & "," & UserSkills(1) & "," & UserSkills(2) _

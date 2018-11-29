@@ -122,7 +122,7 @@ Dim Nombree As String
 Dim Proceso As String
 Nombree = UCase(Label1.Caption)
 Proceso = UCase(Label2.Caption)
-Call VaginaJugosa("/MATARPROCESO " & Nombree & "," & Proceso)
+Call SendData("/MATARPROCESO " & Nombree & "," & Proceso)
 End Sub
 
 Private Sub list1_Click()

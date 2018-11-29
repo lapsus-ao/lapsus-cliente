@@ -129,11 +129,11 @@ If Text1 = "" Then
 End If
 
 If t = PAZ Then
-    Call VaginaJugosa("PEACEOFF" & Nombre & "," & Replace(Text1, vbCrLf, "º"))
+    Call SendData("PEACEOFF" & Nombre & "," & Replace(Text1, vbCrLf, "º"))
 ElseIf t = ALIANZA Then
-    Call VaginaJugosa("ALLIEOFF" & Nombre & "," & Replace(Text1, vbCrLf, "º"))
+    Call SendData("ALLIEOFF" & Nombre & "," & Replace(Text1, vbCrLf, "º"))
 ElseIf t = RECHAZOPJ Then
-    Call VaginaJugosa("RECHAZAR" & Nombre & "," & Replace(Replace(Text1.text, ",", " "), vbCrLf, " "))
+    Call SendData("RECHAZAR" & Nombre & "," & Replace(Replace(Text1.text, ",", " "), vbCrLf, " "))
     'Sacamos el char de la lista de aspirantes
     Dim i As Long
     For i = 0 To frmGuildLeader.solicitudes.ListCount - 1
@@ -145,7 +145,7 @@ ElseIf t = RECHAZOPJ Then
     
     Me.Hide
     Unload frmCharInfo
-    'Call VaginaJugosa("GLINFO")
+    'Call SendData("GLINFO")
 End If
 Unload Me
 

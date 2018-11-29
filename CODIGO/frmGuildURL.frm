@@ -95,7 +95,7 @@ If Button = vbRightButton Then Unload Me
 End Sub
 Private Sub Command1_Click()
 If Text1 <> "" Then _
-    Call VaginaJugosa("NEWWEBSI" & Text1)
+    Call SendData("NEWWEBSI" & Text1)
 Unload Me
 End Sub
 

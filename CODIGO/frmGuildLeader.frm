@@ -280,14 +280,14 @@ Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As 
 If Button = vbRightButton Then Unload Me
 End Sub
 Private Sub cmdElecciones_Click()
-    Call VaginaJugosa("ABREELEC")
+    Call SendData("ABREELEC")
     Unload Me
 End Sub
 
 Private Sub Command1_Click()
 
 frmCharInfo.frmsolicitudes = True
-Call VaginaJugosa("1HRINFO<" & solicitudes.List(solicitudes.listIndex))
+Call SendData("1HRINFO<" & solicitudes.List(solicitudes.listIndex))
 
 'Unload Me
 
@@ -296,7 +296,7 @@ End Sub
 Private Sub Command2_Click()
 
 frmCharInfo.frmmiembros = True
-Call VaginaJugosa("1HRINFO<" & members.List(members.listIndex))
+Call SendData("1HRINFO<" & members.List(members.listIndex))
 
 'Unload Me
 
@@ -308,14 +308,14 @@ Dim k$
 
 k$ = Replace(txtguildnews, vbCrLf, "º")
 
-Call VaginaJugosa("ACTGNEWS" & k$)
+Call SendData("ACTGNEWS" & k$)
 
 End Sub
 
 Private Sub Command4_Click()
 
 frmGuildBrief.EsLeader = True
-Call VaginaJugosa("CLANDETAILS" & Trim$(ReadField(1, guildslist.List(guildslist.listIndex), Asc("("))))
+Call SendData("CLANDETAILS" & Trim$(ReadField(1, guildslist.List(guildslist.listIndex), Asc("("))))
 
 'Unload Me
 
@@ -335,10 +335,10 @@ Call frmGuildURL.Show(vbModeless, frmGuildLeader)
 End Sub
 
 Private Sub Command7_Click()
-Call VaginaJugosa("ENVPROPP")
+Call SendData("ENVPROPP")
 End Sub
 Private Sub Command9_Click()
-    Call VaginaJugosa("ENVALPRO")
+    Call SendData("ENVALPRO")
 End Sub
 
 

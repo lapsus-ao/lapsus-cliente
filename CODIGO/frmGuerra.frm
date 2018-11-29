@@ -122,7 +122,7 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub Image1_Click()
-    Call VaginaJugosa("/CREARGUERRA " & numeroSala & "," & sldUsers.Value & "," & sldPuntos.Value & "," & txtClan.Text)
+    Call SendData("/CREARGUERRA " & numeroSala & "," & sldUsers.Value & "," & sldPuntos.Value & "," & txtClan.Text)
     Unload Me
 End Sub
 

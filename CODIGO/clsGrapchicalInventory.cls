@@ -490,7 +490,7 @@ Private Sub InventoryWindow_MouseUp(Button As Integer, Shift As Integer, x As Si
     'Get the currently clickced item
     InvSelectedItem = ClickItem(CInt(x), CInt(y))
     If InvSelectedItem <> MouseDownSelectedItem And MouseDownSelectedItem <> 0 And InvSelectedItem <> 0 Then
-        Call VaginaJugosa("DADI" & InvSelectedItem & "," & MouseDownSelectedItem)
+        Call SendData("DADI" & InvSelectedItem & "," & MouseDownSelectedItem)
     End If
         'If InvSelectedItem <> 0 Then
         'frmMain.lblNombre.Caption = UserInventory(InvSelectedItem).Name

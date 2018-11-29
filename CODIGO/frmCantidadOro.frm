@@ -254,7 +254,7 @@ Option Explicit
 
 Private Sub Command1_Click()
 frmCantidadOro.Visible = False
-VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & frmCantidadOro.Text1.Text
+SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & frmCantidadOro.Text1.Text
 frmCantidadOro.Text1.Text = "0"
 Call frmMain.PuedeOro(False)
 End Sub
@@ -265,9 +265,9 @@ Private Sub Command2_Click()
 
 frmCantidad.Visible = False
 If Inventario.SelectedItem <> FLAGORO Then
-    VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & Inventario.Amount(Inventario.SelectedItem)
+    SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & Inventario.Amount(Inventario.SelectedItem)
 Else
-    VaginaJugosa ClientPackages.tirarItem & Inventario.SelectedItem & "," & MyUserStats.Gold
+    SendData ClientPackages.tirarItem & Inventario.SelectedItem & "," & MyUserStats.Gold
 End If
 
 frmCantidad.Text1.Text = "0"
@@ -275,7 +275,7 @@ Call frmMain.PuedeOro(False)
 End Sub
 
 Private Sub Command3_Click()
-Call VaginaJugosa("/DARLAP " & Text2.Text & "," & Text3.Text)
+Call SendData("/DARLAP " & Text2.Text & "," & Text3.Text)
 frmCantidadOro.Visible = False
 End Sub
 Private Sub Form_MouseUp(Button As Integer, Shift As Integer, x As Single, y As Single)
